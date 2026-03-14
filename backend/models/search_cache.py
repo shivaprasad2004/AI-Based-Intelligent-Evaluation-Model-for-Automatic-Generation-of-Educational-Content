@@ -2,6 +2,8 @@ from utils.db import db
 from datetime import datetime
 import json
 
+TTL_HOURS = 24
+
 
 class TopicSearchCache(db.Model):
     __tablename__ = 'topic_search_cache'
@@ -18,7 +20,15 @@ class TopicSearchCache(db.Model):
     web_resources = db.Column(db.Text, nullable=True)  # JSON
     related_topics = db.Column(db.Text, nullable=True)  # JSON
     infobox = db.Column(db.Text, nullable=True)  # JSON
+    sources = db.Column(db.Text, nullable=True)  # JSON - source attribution
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def is_expired(self):
+        if not self.created_at:
+            return True
+        elapsed = (datetime.utcnow() - self.created_at).total_seconds()
+        return elapsed > TTL_HOURS * 3600
 
     def to_dict(self):
         return {
@@ -33,5 +43,6 @@ class TopicSearchCache(db.Model):
             'web_resources': json.loads(self.web_resources) if self.web_resources else [],
             'related_topics': json.loads(self.related_topics) if self.related_topics else [],
             'infobox': json.loads(self.infobox) if self.infobox else {},
-            'created_at': self.created_at.isoformat()
+            'sources': json.loads(self.sources) if self.sources else [],
+            'created_at': self.created_at.isoformat() if self.created_at else None
         }

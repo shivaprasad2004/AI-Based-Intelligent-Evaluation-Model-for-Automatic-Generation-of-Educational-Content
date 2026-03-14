@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { UserPlus, GraduationCap, BookOpen } from 'lucide-react';
+import PasswordStrengthMeter, { getPasswordStrength } from '../components/PasswordStrengthMeter';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ username: '', email: '', password: '', role: 'student' });
@@ -13,16 +14,25 @@ export default function RegisterPage() {
 
   const update = (field) => (e) => setForm(f => ({ ...f, [field]: e.target.value }));
 
+  const passwordStrength = getPasswordStrength(form.password);
+  const isPasswordStrong = passwordStrength >= 3; // At least "fair"
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.username || !form.email || !form.password) return toast.error('Fill in all fields');
+    if (!isPasswordStrong) return toast.error('Please choose a stronger password');
     setLoading(true);
     try {
       await register(form.username, form.email, form.password, form.role);
       toast.success('Account created!');
       navigate('/dashboard');
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Registration failed');
+      const errorData = err.response?.data;
+      if (errorData?.details) {
+        toast.error(errorData.details[0]);
+      } else {
+        toast.error(errorData?.error || 'Registration failed');
+      }
     } finally {
       setLoading(false);
     }
@@ -65,7 +75,8 @@ export default function RegisterPage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Password</label>
                 <input type="password" value={form.password} onChange={update('password')}
-                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none" placeholder="Create a password" />
+                  className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none" placeholder="Create a strong password" />
+                <PasswordStrengthMeter password={form.password} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">I am a</label>
@@ -80,8 +91,8 @@ export default function RegisterPage() {
                   </button>
                 </div>
               </div>
-              <button type="submit" disabled={loading}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2.5 rounded-xl hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 font-medium flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25">
+              <button type="submit" disabled={loading || !isPasswordStrong}
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2.5 rounded-xl hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 font-medium flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 transition-all">
                 {loading ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" /> : <><UserPlus className="w-4 h-4" /> Create Account</>}
               </button>
             </form>

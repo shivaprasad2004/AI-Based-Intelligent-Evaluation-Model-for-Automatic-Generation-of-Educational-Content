@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Play, BookOpen, Globe, Brain, Clock, Award, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Play, BookOpen, Globe, Brain, Clock, Award, ChevronDown, ChevronUp, ExternalLink, FileText } from 'lucide-react';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 import PageTransition from '../components/ui/PageTransition';
@@ -13,6 +13,7 @@ import { useAuth } from '../context/AuthContext';
 const tabs = [
   { id: 'learn', label: 'Learn', icon: Globe },
   { id: 'quiz', label: 'Quiz', icon: Brain },
+  { id: 'exam', label: 'Essay Exam', icon: FileText },
   { id: 'pyq', label: 'PYQs', icon: BookOpen },
 ];
 
@@ -256,6 +257,36 @@ export default function TopicDetailPage() {
 
               {quizHistory.length === 0 && (
                 <p className="text-center text-gray-500 dark:text-gray-400 py-8">No quiz attempts yet for this topic. Start your first quiz!</p>
+              )}
+            </motion.div>
+          )}
+
+          {/* ESSAY EXAM TAB */}
+          {activeTab === 'exam' && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+              {user?.role === 'student' ? (
+                <div className="text-center">
+                  <GlassCard>
+                    <FileText className="w-12 h-12 text-purple-500 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">Written Exam</h3>
+                    <p className="text-gray-500 dark:text-gray-400 mb-2 max-w-md mx-auto">
+                      Write a ~300 word essay about <strong>{topic.name}</strong>. Your response will be evaluated against key concepts from real internet sources.
+                    </p>
+                    <div className="flex items-center justify-center gap-3 text-sm text-gray-400 mb-6">
+                      <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> 30 minutes</span>
+                      <span>|</span>
+                      <span className="flex items-center gap-1"><FileText className="w-3.5 h-3.5" /> ~300 words</span>
+                    </div>
+                    <button
+                      onClick={() => navigate('/exam', { state: { topic: topic.name } })}
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 py-3 rounded-xl hover:from-purple-700 hover:to-indigo-700 font-medium transition-all shadow-lg shadow-purple-500/25"
+                    >
+                      <FileText className="w-5 h-5" /> Start Written Exam
+                    </button>
+                  </GlassCard>
+                </div>
+              ) : (
+                <p className="text-center text-gray-500 dark:text-gray-400 py-8">Essay exams are available for students only.</p>
               )}
             </motion.div>
           )}

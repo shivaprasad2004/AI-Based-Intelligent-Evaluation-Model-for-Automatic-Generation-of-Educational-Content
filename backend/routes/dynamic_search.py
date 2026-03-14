@@ -1,8 +1,12 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
 from utils.db import db
-from services.ai_service import get_ai_response, parse_json_response
+from services.ai_service import (
+    get_ai_response, get_ai_content_response, parse_json_response,
+    _generate_ai_topic_content, _generate_ai_questions, _evaluate_ai_answers,
+    _generate_real_topic_content
+)
 from utils.prompts import (
     TOPIC_CONTENT_PROMPT, DYNAMIC_QUIZ_PROMPT, ANSWER_EVALUATION_PROMPT
 )
@@ -30,16 +34,29 @@ def search_topic():
 
     topic_key = topic.lower().strip()
 
-    # Check cache first
+    # Check cache first (with TTL expiry)
     cached = TopicSearchCache.query.filter_by(topic_key=topic_key).first()
     if cached:
-        return jsonify(cached.to_dict())
+        if cached.is_expired():
+            db.session.delete(cached)
+            db.session.commit()
+        else:
+            return jsonify(cached.to_dict())
 
-    # Generate content via AI service (fetches real web data in mock mode)
+    # Generate content: AI-powered (Gemini/Claude/GPT) or fallback to raw web data
+    has_ai = current_app.config.get('AI_PROVIDER', 'mock') != 'mock'
+
     try:
-        prompt = TOPIC_CONTENT_PROMPT.format(topic=topic)
-        raw = get_ai_response(prompt)
-        content = parse_json_response(raw)
+        if has_ai:
+            # AI-POWERED: Fetches real web data + uses AI to synthesize accurate content
+            raw = _generate_ai_topic_content(topic)
+            content = json.loads(raw) if isinstance(raw, str) else raw
+        else:
+            # FALLBACK: Raw web data extraction without AI
+            prompt = TOPIC_CONTENT_PROMPT.format(topic=topic)
+            raw = _generate_real_topic_content(prompt)
+            content = json.loads(raw) if isinstance(raw, str) else raw
+
         # Ensure all required fields exist
         content.setdefault('overview', '')
         content.setdefault('key_concepts', [])
@@ -50,15 +67,16 @@ def search_topic():
         content.setdefault('web_resources', [])
         content.setdefault('related_topics', [])
         content.setdefault('infobox', {})
+        content.setdefault('sources', [])
     except Exception as e:
-        print(f"Content generation error (primary): {e}")
-        # Retry with explicit mock/web-data approach
+        print(f"Content generation error: {e}")
+        # Last resort fallback
         try:
-            from services.ai_service import _generate_real_topic_content
+            prompt = TOPIC_CONTENT_PROMPT.format(topic=topic)
             raw = _generate_real_topic_content(prompt)
             content = json.loads(raw)
         except Exception as e2:
-            print(f"Content generation error (fallback): {e2}")
+            print(f"Content generation fallback error: {e2}")
             content = {
                 'overview': f'{topic} is an important area of study. Please try again later.',
                 'key_concepts': [],
@@ -68,7 +86,8 @@ def search_topic():
                 'wikipedia_title': topic,
                 'web_resources': [],
                 'related_topics': [],
-                'infobox': {}
+                'infobox': {},
+                'sources': []
             }
 
     # Cache the result
@@ -83,7 +102,8 @@ def search_topic():
         wikipedia_title=content.get('wikipedia_title', topic),
         web_resources=json.dumps(content.get('web_resources', [])),
         related_topics=json.dumps(content.get('related_topics', [])),
-        infobox=json.dumps(content.get('infobox', {}))
+        infobox=json.dumps(content.get('infobox', {})),
+        sources=json.dumps(content.get('sources', []))
     )
     db.session.add(cache_entry)
     db.session.commit()
@@ -140,13 +160,17 @@ def generate_quiz():
     if difficulty is None:
         difficulty = get_student_level(student_id, topic.id)
 
-    # Generate questions via AI (uses real web data)
+    # Generate questions: AI-powered or fallback
+    has_ai = current_app.config.get('AI_PROVIDER', 'mock') != 'mock'
     try:
-        prompt = DYNAMIC_QUIZ_PROMPT.format(
-            count=count, topic=topic_name, difficulty=difficulty
-        )
-        raw = get_ai_response(prompt)
-        questions_data = parse_json_response(raw)
+        if has_ai:
+            questions_data = _generate_ai_questions(topic_name, difficulty, count)
+        else:
+            prompt = DYNAMIC_QUIZ_PROMPT.format(
+                count=count, topic=topic_name, difficulty=difficulty
+            )
+            raw = get_ai_response(prompt)
+            questions_data = parse_json_response(raw)
     except Exception as e:
         print(f"Quiz generation error: {e}")
         questions_data = []
@@ -230,12 +254,16 @@ def submit_quiz():
 
     # AI evaluation
     eval_results = {}
+    has_ai = current_app.config.get('AI_PROVIDER', 'mock') != 'mock'
     try:
-        prompt = ANSWER_EVALUATION_PROMPT.format(
-            topic=topic_name, qa_pairs=qa_pairs_text
-        )
-        raw = get_ai_response(prompt)
-        evaluations = parse_json_response(raw)
+        if has_ai:
+            evaluations = _evaluate_ai_answers(topic_name, qa_pairs_text)
+        else:
+            prompt = ANSWER_EVALUATION_PROMPT.format(
+                topic=topic_name, qa_pairs=qa_pairs_text
+            )
+            raw = get_ai_response(prompt)
+            evaluations = parse_json_response(raw)
         for ev in evaluations:
             eval_results[ev['question_id']] = ev
     except Exception as e:

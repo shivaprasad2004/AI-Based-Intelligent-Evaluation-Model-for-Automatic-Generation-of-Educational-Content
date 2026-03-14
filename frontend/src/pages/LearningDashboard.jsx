@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BarChart3, TrendingUp, Target, AlertTriangle, BookOpen, Loader2, Clock, Brain, Trophy } from 'lucide-react';
+import { BarChart3, TrendingUp, Target, AlertTriangle, BookOpen, Loader2, Clock, Brain, Trophy, FileText } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -12,6 +12,7 @@ const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'
 export default function LearningDashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [essayHistory, setEssayHistory] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +20,10 @@ export default function LearningDashboard() {
       .then(res => setData(res.data))
       .catch(() => toast.error('Failed to load progress'))
       .finally(() => setLoading(false));
+
+    api.get('/exam/history')
+      .then(res => setEssayHistory(res.data.exams || []))
+      .catch(() => {});
   }, []);
 
   if (loading) {
@@ -304,6 +309,52 @@ export default function LearningDashboard() {
             </GlassCard>
           )}
         </div>
+
+        {/* Written Exam History */}
+        {essayHistory.length > 0 && (
+          <GlassCard hover={false} className="mb-8">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-purple-500" />
+              Written Exam History
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 dark:border-gray-700">
+                    <th className="text-left py-3 px-2 text-gray-500 dark:text-gray-400 font-medium">Topic</th>
+                    <th className="text-center py-3 px-2 text-gray-500 dark:text-gray-400 font-medium">Grade</th>
+                    <th className="text-center py-3 px-2 text-gray-500 dark:text-gray-400 font-medium">Score</th>
+                    <th className="text-center py-3 px-2 text-gray-500 dark:text-gray-400 font-medium">Words</th>
+                    <th className="text-right py-3 px-2 text-gray-500 dark:text-gray-400 font-medium">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {essayHistory.map((exam) => {
+                    const gradeColor = exam.grade?.startsWith('A') ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                      : exam.grade?.startsWith('B') ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+                      : exam.grade?.startsWith('C') ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+                      : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
+                    return (
+                      <tr key={exam.id} className="border-b border-gray-100 dark:border-gray-800 last:border-0">
+                        <td className="py-3 px-2 text-gray-800 dark:text-gray-200 font-medium">{exam.topic_name}</td>
+                        <td className="py-3 px-2 text-center">
+                          <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-bold ${gradeColor}`}>
+                            {exam.grade}
+                          </span>
+                        </td>
+                        <td className="py-3 px-2 text-center text-gray-600 dark:text-gray-400">{exam.score}%</td>
+                        <td className="py-3 px-2 text-center text-gray-600 dark:text-gray-400">{exam.word_count}</td>
+                        <td className="py-3 px-2 text-right text-gray-500 dark:text-gray-400 text-xs">
+                          {exam.created_at ? new Date(exam.created_at).toLocaleDateString() : 'N/A'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </GlassCard>
+        )}
 
         {/* Mobile explore button */}
         <div className="sm:hidden text-center mb-4">

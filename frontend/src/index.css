@@ -74,6 +74,33 @@
   from { stroke-dashoffset: 1000; }
   to { stroke-dashoffset: 0; }
 }
+@keyframes confettifall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+@keyframes celebrate {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes successPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+}
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scoreReveal {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
 
 /* Utility classes */
 .animate-fade-in { animation: fadeIn 0.5s ease-out; }
@@ -87,6 +114,18 @@
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
 .animate-count-up { animation: count-up 0.6s ease-out; }
 .animate-gradient { animation: gradientShift 3s ease infinite; background-size: 200% 200%; }
+.animate-shimmer { animation: shimmer 1.5s ease-in-out infinite; }
+.animate-confettifall { animation: confettifall 3s ease-in forwards; }
+.animate-celebrate { animation: celebrate 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.animate-success-pulse { animation: successPulse 1.5s ease-in-out infinite; }
+.animate-error-shake { animation: errorShake 0.5s ease; }
+.animate-slide-in-up { animation: slideInUp 0.5s ease-out; }
+.animate-score-reveal { animation: scoreReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+.gradient-success { background: linear-gradient(135deg, #10b981, #059669); }
+.gradient-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.gradient-danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.gradient-aurora { background: linear-gradient(135deg, #667eea, #764ba2, #f093fb); background-size: 300% 300%; animation: gradientShift 4s ease infinite; }
 
 .glass {
   background: rgba(255, 255, 255, 0.7);

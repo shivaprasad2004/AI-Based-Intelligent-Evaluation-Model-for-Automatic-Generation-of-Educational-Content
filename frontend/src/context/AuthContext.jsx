@@ -12,10 +12,10 @@ export function AuthProvider({ children }) {
       return null;
     }
   });
-  const [loading, setLoading] = useState(() => !localStorage.getItem('token'));
+  const [loading, setLoading] = useState(() => !localStorage.getItem('access_token'));
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access_token');
     if (token) {
       api.get('/auth/me')
         .then(res => {
@@ -23,7 +23,8 @@ export function AuthProvider({ children }) {
           localStorage.setItem('user', JSON.stringify(res.data.user));
         })
         .catch(() => {
-          localStorage.removeItem('token');
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
           localStorage.removeItem('user');
           setUser(null);
         })
@@ -35,7 +36,8 @@ export function AuthProvider({ children }) {
 
   const login = async (username, password) => {
     const res = await api.post('/auth/login', { username, password });
-    localStorage.setItem('token', res.data.token);
+    localStorage.setItem('access_token', res.data.access_token);
+    localStorage.setItem('refresh_token', res.data.refresh_token);
     localStorage.setItem('user', JSON.stringify(res.data.user));
     setUser(res.data.user);
     return res.data.user;
@@ -43,14 +45,21 @@ export function AuthProvider({ children }) {
 
   const register = async (username, email, password, role) => {
     const res = await api.post('/auth/register', { username, email, password, role });
-    localStorage.setItem('token', res.data.token);
+    localStorage.setItem('access_token', res.data.access_token);
+    localStorage.setItem('refresh_token', res.data.refresh_token);
     localStorage.setItem('user', JSON.stringify(res.data.user));
     setUser(res.data.user);
     return res.data.user;
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
+  const logout = async () => {
+    try {
+      await api.post('/auth/logout');
+    } catch {
+      // Best effort - continue with local cleanup
+    }
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     localStorage.removeItem('user');
     setUser(null);
   };

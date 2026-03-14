@@ -13,21 +13,37 @@ export default function TopicContent({ content }) {
 
   return (
     <div className="space-y-6">
-      {/* Topic Title + Source Badge */}
+      {/* Topic Title + Source Badges */}
       <div className="text-center mb-2">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{content.topic}</h2>
-        {content.wikipedia_url && (
-          <a
-            href={content.wikipedia_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            <Globe className="w-3.5 h-3.5" />
-            Source: Wikipedia — {content.wikipedia_title || content.topic}
-            <ExternalLink className="w-3 h-3" />
-          </a>
-        )}
+        <div className="flex items-center justify-center gap-2 mt-3 flex-wrap">
+          {content.sources?.length > 0 ? (
+            content.sources.map((src, i) => (
+              <a
+                key={i}
+                href={src.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full text-xs font-medium hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors border border-blue-200 dark:border-blue-800"
+              >
+                <Globe className="w-3 h-3" />
+                {src.name}
+                <ExternalLink className="w-2.5 h-2.5" />
+              </a>
+            ))
+          ) : content.wikipedia_url ? (
+            <a
+              href={content.wikipedia_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full text-xs font-medium hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors border border-blue-200 dark:border-blue-800"
+            >
+              <Globe className="w-3 h-3" />
+              Wikipedia — {content.wikipedia_title || content.topic}
+              <ExternalLink className="w-2.5 h-2.5" />
+            </a>
+          ) : null}
+        </div>
       </div>
 
       {/* Infobox (if available) */}
