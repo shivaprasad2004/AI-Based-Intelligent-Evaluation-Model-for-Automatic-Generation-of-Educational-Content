@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.ai_service import get_ai_response
 from models.topic import Topic
@@ -16,6 +16,7 @@ def ask_tutor():
     message = data.get('message', '').strip()
     topic_id = data.get('topic_id')
     chat_type = data.get('type', 'general')  # general, explain, practice, doubt
+    history = data.get('history', [])  # Conversation history for context
 
     if not message:
         return jsonify({'error': 'Message is required'}), 400
@@ -26,11 +27,26 @@ def ask_tutor():
         if topic:
             topic_context = f' about {topic.name} ({topic.description})'
 
+    # Build conversation context from history (last 10 messages)
+    conversation_context = ''
+    if history and isinstance(history, list):
+        recent = history[-10:]
+        conv_parts = []
+        for msg in recent:
+            role = msg.get('role', 'user')
+            text = msg.get('text', '')
+            if role == 'user':
+                conv_parts.append(f"Student: {text}")
+            else:
+                conv_parts.append(f"Tutor: {text}")
+        if conv_parts:
+            conversation_context = f"\n\n--- Previous conversation ---\n" + "\n".join(conv_parts) + "\n--- End of previous conversation ---\n\n"
+
     if chat_type == 'explain':
         prompt = f"""You are an expert tutor. Explain the following concept{topic_context} in a clear,
 simple way that a student can understand. Use examples and analogies where helpful.
 Break down complex ideas into simple steps.
-
+{conversation_context}
 Student's question: {message}
 
 Provide a structured explanation with:
@@ -41,7 +57,7 @@ Provide a structured explanation with:
 
     elif chat_type == 'practice':
         prompt = f"""You are an expert tutor. Generate 3 practice questions{topic_context} based on: {message}
-
+{conversation_context}
 For each question provide:
 - The question
 - 4 options (A, B, C, D)
@@ -52,7 +68,7 @@ Format as a numbered list. Make questions progressively harder."""
 
     elif chat_type == 'doubt':
         prompt = f"""You are a patient, encouraging tutor. A student has a doubt{topic_context}.
-
+{conversation_context}
 Student's doubt: {message}
 
 Address their confusion directly. Be encouraging and supportive.
@@ -64,7 +80,7 @@ Provide:
 
     else:
         prompt = f"""You are EvalAI, a friendly and knowledgeable AI tutor. Help the student{topic_context}.
-
+{conversation_context}
 Student: {message}
 
 Respond helpfully and concisely. If they ask about a topic, provide clear explanations.
@@ -73,7 +89,8 @@ Keep your response focused and educational."""
 
     try:
         response = get_ai_response(prompt)
-    except Exception:
+    except Exception as e:
+        current_app.logger.error(f"Chatbot AI failed: {e}")
         response = _get_mock_response(message, chat_type, topic_context)
 
     return jsonify({

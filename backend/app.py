@@ -3,19 +3,25 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from datetime import timedelta
-from config import Config
+from datetime import timedelta, datetime
+from config import Config, config_by_env
 from utils.db import db
+from utils.logger import setup_logger
+import os
 
 limiter = Limiter(key_func=get_remote_address, default_limits=["200 per hour"], storage_uri="memory://")
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
+    env = os.getenv('FLASK_ENV', 'development')
+    app.config.from_object(config_by_env.get(env, Config))
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
     app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=7)
 
-    CORS(app, origins=['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'], supports_credentials=True)
+    # Setup logging
+    setup_logger(app)
+
+    CORS(app, origins=app.config.get('CORS_ORIGINS', ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175']), supports_credentials=True)
     db.init_app(app)
     limiter.init_app(app)
 
@@ -60,14 +66,70 @@ def create_app():
     app.register_blueprint(dynamic_bp, url_prefix='/api')
     app.register_blueprint(exam_bp, url_prefix='/api/exam')
 
+    # Global error handlers
+    @app.errorhandler(500)
+    def internal_error(error):
+        app.logger.error(f"Internal server error: {error}")
+        return jsonify({'error': 'An internal error occurred. Please try again.'}), 500
+
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({'error': 'Resource not found'}), 404
+
     @app.route('/api/health')
     def health():
-        return jsonify({'status': 'ok'})
+        status = {'status': 'ok', 'services': {}}
+        try:
+            db.session.execute(db.text('SELECT 1'))
+            status['services']['database'] = 'ok'
+        except Exception:
+            status['services']['database'] = 'error'
+            status['status'] = 'degraded'
+
+        provider = app.config.get('AI_PROVIDER', 'mock')
+        key_map = {
+            'gemini': 'GEMINI_API_KEY', 'claude': 'ANTHROPIC_API_KEY',
+            'openai': 'OPENAI_API_KEY', 'groq': 'GROQ_API_KEY'
+        }
+        if provider != 'mock':
+            key = app.config.get(key_map.get(provider, ''), '')
+            status['services']['ai'] = 'configured' if key else 'not_configured'
+            status['services']['ai_provider'] = provider
+        else:
+            status['services']['ai'] = 'mock_mode'
+
+        return jsonify(status)
 
     with app.app_context():
         db.create_all()
-        from seeds import seed_database
+        from seeds import seed_database, seed_expanded_subjects
         seed_database()
+        seed_expanded_subjects()
+
+        # Validate AI provider on startup
+        provider = app.config.get('AI_PROVIDER', 'mock')
+        if provider != 'mock':
+            key_map = {
+                'gemini': 'GEMINI_API_KEY', 'claude': 'ANTHROPIC_API_KEY',
+                'openai': 'OPENAI_API_KEY', 'groq': 'GROQ_API_KEY'
+            }
+            key_name = key_map.get(provider, '')
+            key_value = app.config.get(key_name, '')
+            if not key_value:
+                app.logger.critical(f"AI_PROVIDER is '{provider}' but {key_name} is empty! AI features will fall back to mock.")
+            else:
+                app.logger.info(f"AI provider '{provider}' configured with {key_name}")
+
+        # Cleanup expired blacklisted tokens
+        try:
+            from models.token_blacklist import TokenBlacklist
+            cutoff = datetime.utcnow() - timedelta(days=7)
+            expired = TokenBlacklist.query.filter(TokenBlacklist.expires_at < cutoff).delete()
+            if expired:
+                db.session.commit()
+                app.logger.info(f"Cleaned up {expired} expired blacklisted tokens")
+        except Exception as e:
+            app.logger.warning(f"Token cleanup failed: {e}")
 
     return app
 

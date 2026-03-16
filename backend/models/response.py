@@ -5,13 +5,13 @@ class QuizSession(db.Model):
     __tablename__ = 'quiz_sessions'
 
     id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)
     topic_id = db.Column(db.Integer, db.ForeignKey('topics.id'), nullable=False)
     difficulty_level = db.Column(db.Integer, default=1)
     total_score = db.Column(db.Float, nullable=True)
     max_score = db.Column(db.Float, nullable=True)
     started_at = db.Column(db.DateTime, default=datetime.utcnow)
-    completed_at = db.Column(db.DateTime, nullable=True)
+    completed_at = db.Column(db.DateTime, nullable=True, index=True)
 
     responses = db.relationship('StudentResponse', backref='session', lazy=True, cascade='all, delete-orphan')
     topic = db.relationship('Topic', backref='quiz_sessions')

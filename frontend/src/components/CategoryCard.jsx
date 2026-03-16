@@ -8,6 +8,12 @@ const gradients = [
   'from-orange-500 to-red-500',
   'from-cyan-500 to-blue-500',
   'from-rose-500 to-pink-500',
+  'from-amber-500 to-orange-500',
+  'from-teal-500 to-cyan-500',
+  'from-indigo-500 to-violet-500',
+  'from-pink-500 to-rose-500',
+  'from-lime-500 to-emerald-500',
+  'from-violet-500 to-purple-500',
 ];
 
 const icons = {
@@ -16,6 +22,26 @@ const icons = {
   'Programming': '</>',
   'Computer Science': 'CS',
   'General Knowledge': 'GK',
+  'Economics': 'Ec',
+  'English Literature': 'En',
+  'Physics (Advanced)': 'Ph',
+  'Chemistry (Advanced)': 'Ch',
+  'Biology (Advanced)': 'Bio',
+  'History': 'Hi',
+  'Political Science': 'PS',
+  'Psychology': 'Ψ',
+  'Electrical Engineering': 'EE',
+  'Mechanical Engineering': 'ME',
+  'Civil Engineering': 'CE',
+  'Data Science & ML': 'DS',
+  'Accountancy & Finance': 'AF',
+  'Business Studies': 'BS',
+  'Sociology': 'So',
+  'Philosophy': 'Φ',
+  'Geography (Advanced)': 'Ge',
+  'Web Development': 'WD',
+  'Cybersecurity': '🛡',
+  'Mathematics (Advanced)': '∑',
 };
 
 export default function CategoryCard({ category, index = 0 }) {

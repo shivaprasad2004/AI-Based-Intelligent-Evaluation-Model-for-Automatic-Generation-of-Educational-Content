@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from utils.db import db
 from utils.auth_helpers import student_required
@@ -22,13 +22,17 @@ def start_exam():
         return jsonify({'error': 'Topic must be at least 2 characters'}), 400
 
     # Extract key concepts to get count (don't expose them)
-    concepts, _, _, _ = extract_key_concepts(topic)
+    try:
+        concepts, _, _, _ = extract_key_concepts(topic)
+    except Exception as e:
+        current_app.logger.error(f"Failed to extract key concepts for exam topic '{topic}': {e}")
+        concepts = []
 
     return jsonify({
         'topic': topic,
         'word_target': 300,
         'time_limit_seconds': 1800,  # 30 minutes
-        'key_concept_count': len(concepts),
+        'key_concept_count': max(len(concepts), 5),
         'instructions': f'Write approximately 300 words about "{topic}". Cover the key concepts, definitions, applications, and significance of the topic. You have 30 minutes.'
     })
 
@@ -55,10 +59,18 @@ def submit_exam():
     student_id = int(get_jwt_identity())
 
     # Extract key concepts from internet sources
-    key_concepts, concept_details, wiki_data, ddg_data = extract_key_concepts(topic)
+    try:
+        key_concepts, concept_details, wiki_data, ddg_data = extract_key_concepts(topic)
+    except Exception as e:
+        current_app.logger.error(f"Failed to extract concepts for exam '{topic}': {e}")
+        key_concepts, concept_details, wiki_data, ddg_data = [topic.lower()], {}, None, None
 
     # Evaluate the essay
-    result = evaluate_essay(essay_text, topic, key_concepts, wiki_data)
+    try:
+        result = evaluate_essay(essay_text, topic, key_concepts, wiki_data)
+    except Exception as e:
+        current_app.logger.error(f"Essay evaluation failed for topic '{topic}': {e}")
+        return jsonify({'error': 'Essay evaluation temporarily unavailable. Please try again.'}), 503
 
     # Save to database
     exam = WrittenExam(

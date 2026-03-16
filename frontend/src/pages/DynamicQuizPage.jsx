@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 import { useQuiz } from '../context/QuizContext';
 import QuestionCard from '../components/QuestionCard';
 import Timer from '../components/Timer';
@@ -57,7 +58,18 @@ export default function DynamicQuizPage() {
   const currentQuestion = questions[currentIndex];
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
+    <div className="max-w-3xl mx-auto px-4 py-8 relative">
+      {/* Full-screen loading overlay during submission */}
+      {submitting && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center shadow-2xl max-w-sm mx-4">
+            <Loader2 className="w-12 h-12 text-indigo-500 animate-spin mx-auto mb-4" />
+            <p className="text-lg font-semibold text-gray-800 dark:text-white">Evaluating your answers with AI...</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">This may take a few seconds</p>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-xl font-bold text-gray-800 dark:text-white">

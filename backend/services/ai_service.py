@@ -1,75 +1,141 @@
 import json
 import re
 import random
+import time
 import requests
 from flask import current_app
+
+
+# ─────────────────────────────────────────────────────────────
+# AI PROVIDER CALL WITH RETRY + FALLBACK CHAIN
+# ─────────────────────────────────────────────────────────────
+
+_PROVIDER_CALL_MAP = {
+    'gemini': '_call_gemini',
+    'claude': '_call_claude',
+    'openai': '_call_openai',
+    'groq': '_call_groq',
+}
+
+_TRANSIENT_ERRORS = (
+    TimeoutError, ConnectionError, requests.exceptions.Timeout,
+    requests.exceptions.ConnectionError,
+)
+
+
+def _is_transient(e):
+    """Check if an exception is likely transient (worth retrying)."""
+    if isinstance(e, _TRANSIENT_ERRORS):
+        return True
+    msg = str(e).lower()
+    if any(k in msg for k in ['timeout', 'rate limit', '429', '503', '502', '500', 'overloaded']):
+        return True
+    return False
+
+
+def _call_provider(provider, prompt, temperature=0.3, max_retries=2):
+    """Call a single AI provider with retry logic for transient errors."""
+    func_name = _PROVIDER_CALL_MAP.get(provider)
+    if not func_name:
+        raise ValueError(f"Unknown provider: {provider}")
+    func = globals()[func_name]
+
+    last_error = None
+    for attempt in range(max_retries + 1):
+        try:
+            return func(prompt, temperature=temperature)
+        except Exception as e:
+            last_error = e
+            if attempt < max_retries and _is_transient(e):
+                wait = (attempt + 1) * 1.0  # 1s, 2s
+                current_app.logger.warning(
+                    f"AI provider '{provider}' attempt {attempt + 1} failed (transient): {e}. Retrying in {wait}s..."
+                )
+                time.sleep(wait)
+            else:
+                break
+    raise last_error
+
+
+def _get_fallback_providers(primary):
+    """Get ordered list of fallback providers based on available API keys."""
+    fallback_order = ['gemini', 'groq', 'openai', 'claude']
+    key_map = {
+        'gemini': 'GEMINI_API_KEY',
+        'claude': 'ANTHROPIC_API_KEY',
+        'openai': 'OPENAI_API_KEY',
+        'groq': 'GROQ_API_KEY',
+    }
+    providers = []
+    for p in fallback_order:
+        if p != primary and current_app.config.get(key_map.get(p, ''), ''):
+            providers.append(p)
+    return providers
+
+
+def _ai_dispatch(prompt, temperature=0.3):
+    """Try primary provider, then fallbacks, then mock."""
+    provider = current_app.config.get('AI_PROVIDER', 'mock')
+
+    if provider != 'mock':
+        # Try primary provider
+        try:
+            return _call_provider(provider, prompt, temperature)
+        except Exception as e:
+            current_app.logger.error(f"Primary AI provider '{provider}' failed: {e}")
+
+        # Try fallback providers
+        for fallback in _get_fallback_providers(provider):
+            try:
+                current_app.logger.info(f"Trying fallback provider: {fallback}")
+                return _call_provider(fallback, prompt, temperature, max_retries=1)
+            except Exception as e:
+                current_app.logger.warning(f"Fallback provider '{fallback}' also failed: {e}")
+
+        current_app.logger.warning("All AI providers failed. Using mock response.")
+
+    return _mock_response(prompt)
 
 
 # ─────────────────────────────────────────────────────────────
 # MAIN AI DISPATCH
 # ─────────────────────────────────────────────────────────────
 
-def get_ai_response(prompt):
-    """Route to the configured AI provider. Falls back to mock only as last resort."""
-    provider = current_app.config.get('AI_PROVIDER', 'mock')
-
-    if provider != 'mock':
-        try:
-            if provider == 'gemini':
-                return _call_gemini(prompt)
-            elif provider == 'claude':
-                return _call_claude(prompt)
-            elif provider == 'openai':
-                return _call_openai(prompt)
-            elif provider == 'groq':
-                return _call_groq(prompt)
-        except Exception as e:
-            print(f"AI provider '{provider}' failed: {e}. Falling back to mock.")
-
-    return _mock_response(prompt)
+def get_ai_response(prompt, temperature=0.3):
+    """Route to the configured AI provider with retry and fallback chain."""
+    return _ai_dispatch(prompt, temperature)
 
 
-def get_ai_content_response(prompt, context_data=None):
+def get_ai_content_response(prompt, context_data=None, temperature=0.3):
     """Enhanced AI call that includes web-fetched context for richer answers.
     This is the main function for generating accurate, AI-quality content."""
-    provider = current_app.config.get('AI_PROVIDER', 'mock')
 
     # Build enriched prompt with real web data context
     enriched_prompt = prompt
     if context_data:
         enriched_prompt = f"""Use the following REAL information gathered from the internet to create your response.
-Base your answer on these FACTS — do not make up information. Synthesize this data into a clear, well-structured, educational response.
+Base your answer STRICTLY on these FACTS — do not make up information. If the provided data is insufficient, say so rather than inventing details.
+Synthesize this data into a clear, well-structured, educational response.
 
---- REAL DATA FROM THE INTERNET ---
+--- VERIFIED DATA FROM THE INTERNET ---
 {context_data}
---- END OF REAL DATA ---
+--- END OF VERIFIED DATA ---
+
+IMPORTANT: Your response must be factually consistent with the above data. Do not add information not supported by the sources above.
 
 Now, using the above real information as your knowledge base:
 
 {prompt}"""
 
-    if provider != 'mock':
-        try:
-            if provider == 'gemini':
-                return _call_gemini(enriched_prompt)
-            elif provider == 'claude':
-                return _call_claude(enriched_prompt)
-            elif provider == 'openai':
-                return _call_openai(enriched_prompt)
-            elif provider == 'groq':
-                return _call_groq(enriched_prompt)
-        except Exception as e:
-            print(f"AI content provider '{provider}' failed: {e}. Falling back to mock.")
-
-    return _mock_response(prompt)
+    return _ai_dispatch(enriched_prompt, temperature)
 
 
 # ─────────────────────────────────────────────────────────────
 # AI PROVIDER IMPLEMENTATIONS
 # ─────────────────────────────────────────────────────────────
 
-def _call_gemini(prompt):
-    """Call Google Gemini API."""
+def _call_gemini(prompt, temperature=0.3):
+    """Call Google Gemini API with timeout."""
     import google.generativeai as genai
     api_key = current_app.config.get('GEMINI_API_KEY', '')
     if not api_key:
@@ -79,45 +145,47 @@ def _call_gemini(prompt):
     response = model.generate_content(
         prompt,
         generation_config=genai.types.GenerationConfig(
-            temperature=0.7,
+            temperature=temperature,
             max_output_tokens=8000,
-        )
+        ),
+        request_options={"timeout": 30}
     )
     return response.text.strip()
 
 
-def _call_claude(prompt):
-    """Call Anthropic Claude API."""
+def _call_claude(prompt, temperature=0.3):
+    """Call Anthropic Claude API with timeout."""
     import anthropic
     api_key = current_app.config.get('ANTHROPIC_API_KEY', '')
     if not api_key:
         raise ValueError("ANTHROPIC_API_KEY not configured")
-    client = anthropic.Anthropic(api_key=api_key)
+    client = anthropic.Anthropic(api_key=api_key, timeout=30.0)
     response = client.messages.create(
         model="claude-sonnet-4-20250514",
         max_tokens=4000,
+        temperature=temperature,
         messages=[{"role": "user", "content": prompt}]
     )
     return response.content[0].text.strip()
 
 
-def _call_openai(prompt):
-    """Call OpenAI API."""
+def _call_openai(prompt, temperature=0.3):
+    """Call OpenAI API with timeout."""
     import openai
     api_key = current_app.config.get('OPENAI_API_KEY', '')
     if not api_key:
         raise ValueError("OPENAI_API_KEY not configured")
-    client = openai.OpenAI(api_key=api_key)
+    client = openai.OpenAI(api_key=api_key, timeout=30.0)
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
-        temperature=0.7,
+        temperature=temperature,
         max_tokens=4000
     )
     return response.choices[0].message.content.strip()
 
 
-def _call_groq(prompt):
+def _call_groq(prompt, temperature=0.3):
     """Call Groq API (free, fast inference)."""
     api_key = current_app.config.get('GROQ_API_KEY', '')
     if not api_key:
@@ -128,7 +196,7 @@ def _call_groq(prompt):
         json={
             'model': 'llama-3.3-70b-versatile',
             'messages': [{'role': 'user', 'content': prompt}],
-            'temperature': 0.7,
+            'temperature': temperature,
             'max_tokens': 4000
         },
         timeout=30
@@ -182,7 +250,7 @@ def _fetch_wikipedia(topic):
             except Exception:
                 continue
     except Exception as e:
-        print(f"Wikipedia fetch error: {e}")
+        current_app.logger.error(f"Wikipedia fetch error: {e}")
     return None
 
 
@@ -220,8 +288,128 @@ def _fetch_duckduckgo(topic):
                     result['infobox'][item['label']] = item.get('value', '')
         return result
     except Exception as e:
-        print(f"DuckDuckGo fetch error: {e}")
+        current_app.logger.error(f"DuckDuckGo fetch error: {e}")
     return None
+
+
+def _fetch_mediawiki_api(topic):
+    """Direct MediaWiki REST API fallback when python-wikipedia library fails."""
+    try:
+        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{requests.utils.quote(topic)}"
+        resp = requests.get(url, timeout=10, headers={'User-Agent': 'EvalAI/1.0 (Educational Platform)'})
+        if resp.status_code == 200:
+            data = resp.json()
+            extract = data.get('extract', '')
+            if extract and len(extract) > 50:
+                return {
+                    'summary': extract,
+                    'url': data.get('content_urls', {}).get('desktop', {}).get('page', ''),
+                    'title': data.get('title', topic),
+                    'content': extract,
+                    'links': [],
+                    'categories': []
+                }
+    except Exception as e:
+        current_app.logger.error(f"MediaWiki API error: {e}")
+    return None
+
+
+def _fetch_with_retry(topic, max_retries=2):
+    """Fetch from multiple sources with retry logic and alternative queries."""
+    wiki = _fetch_wikipedia(topic)
+    ddg = _fetch_duckduckgo(topic)
+
+    # If we got good data from at least one source, return
+    if wiki and wiki.get('summary') and len(wiki['summary']) > 100:
+        return wiki, ddg
+    if wiki:
+        return wiki, ddg
+
+    # Try MediaWiki REST API as fallback
+    if not wiki:
+        wiki = _fetch_mediawiki_api(topic)
+        if wiki:
+            return wiki, ddg
+
+    # Try alternative queries
+    alt_queries = []
+    topic_lower = topic.lower()
+    # Remove common prefixes
+    for prefix in ['the ', 'a ', 'an ', 'introduction to ', 'theory of ', 'what is ']:
+        if topic_lower.startswith(prefix):
+            alt_queries.append(topic[len(prefix):].strip())
+    # Add clarifying suffixes
+    alt_queries.extend([
+        f"{topic} (concept)",
+        f"{topic} definition",
+    ])
+
+    for alt in alt_queries:
+        if not alt or len(alt) < 2:
+            continue
+        wiki = _fetch_wikipedia(alt)
+        if wiki and wiki.get('summary'):
+            return wiki, ddg
+        wiki = _fetch_mediawiki_api(alt)
+        if wiki:
+            return wiki, ddg
+
+    # Try DuckDuckGo with alternatives if no abstract
+    if not ddg or not ddg.get('abstract'):
+        for alt in alt_queries[:2]:
+            ddg = _fetch_duckduckgo(alt)
+            if ddg and ddg.get('abstract'):
+                break
+
+    return wiki, ddg
+
+
+def _score_content_quality(content, wiki_data=None, ddg_data=None):
+    """Score 0-100 how well the generated content is."""
+    score = 0
+    overview = content.get('overview', '')
+
+    # Check overview quality
+    if len(overview) > 200:
+        score += 15
+    if len(overview) > 500:
+        score += 10
+    if len(overview) > 1000:
+        score += 5
+
+    # Check key concepts populated
+    concepts = content.get('key_concepts', [])
+    if len(concepts) >= 3:
+        score += 10
+    if len(concepts) >= 6:
+        score += 10
+
+    # Check if overview references actual source data
+    if wiki_data and wiki_data.get('title'):
+        if wiki_data['title'].lower() in overview.lower():
+            score += 10
+
+    # Check examples exist
+    examples = content.get('examples', [])
+    if len(examples) >= 2:
+        score += 10
+    if len(examples) >= 4:
+        score += 5
+
+    # Check study material exists
+    study = content.get('study_material', '')
+    if len(study) > 100:
+        score += 10
+    if len(study) > 500:
+        score += 5
+
+    # Check sources populated
+    if content.get('sources'):
+        score += 5
+    if content.get('web_resources'):
+        score += 5
+
+    return min(score, 100)
 
 
 def _build_context_from_web(topic, wiki, ddg):
@@ -263,9 +451,8 @@ def _generate_ai_topic_content(topic):
     """Generate high-quality educational content using AI + real web data.
     This produces ChatGPT/Claude-level accurate content."""
 
-    # Step 1: Fetch real data from internet
-    wiki = _fetch_wikipedia(topic)
-    ddg = _fetch_duckduckgo(topic)
+    # Step 1: Fetch real data from internet (with retry logic)
+    wiki, ddg = _fetch_with_retry(topic)
 
     # Step 2: Build context from real data
     context = _build_context_from_web(topic, wiki, ddg)
@@ -363,9 +550,8 @@ Return ONLY the JSON object, no markdown code blocks, no extra text.'''
 def _generate_ai_questions(topic, difficulty, count):
     """Generate high-quality quiz questions using AI + real web data."""
 
-    # Fetch real data
-    wiki = _fetch_wikipedia(topic)
-    ddg = _fetch_duckduckgo(topic)
+    # Fetch real data (with retry logic)
+    wiki, ddg = _fetch_with_retry(topic)
     context = _build_context_from_web(topic, wiki, ddg)
 
     prompt = f'''You are an expert quiz master creating questions about "{topic}" at difficulty level {difficulty}/5.
@@ -819,11 +1005,17 @@ def _get_brief_summary(topic):
 
 
 def parse_json_response(text):
-    """Extract JSON from AI response, handling markdown code blocks."""
+    """Extract JSON from AI response, handling markdown code blocks and common issues."""
+    if not text or not text.strip():
+        raise ValueError("Empty AI response - no JSON to parse")
+
     text = text.strip()
+
+    # Remove markdown code blocks
     match = re.search(r'```(?:json)?\s*([\s\S]*?)```', text)
     if match:
         text = match.group(1).strip()
+
     # Try to find JSON array or object
     if not text.startswith(('[', '{')):
         arr_match = re.search(r'(\[[\s\S]*\])', text)
@@ -832,4 +1024,37 @@ def parse_json_response(text):
             text = arr_match.group(1)
         elif obj_match:
             text = obj_match.group(1)
-    return json.loads(text)
+
+    # Clean common AI output issues
+    # Remove trailing commas before } or ]
+    text = re.sub(r',\s*([}\]])', r'\1', text)
+    # Remove JavaScript-style single-line comments
+    text = re.sub(r'//[^\n]*\n', '\n', text)
+    # Handle Python None/True/False in JSON
+    text = text.replace(': None', ': null').replace(': True', ': true').replace(': False', ': false')
+
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError as e:
+        # Try harder: extract partial JSON
+        current_app.logger.warning(f"JSON parse error: {e}. Attempting partial extraction...")
+
+        # Try extracting just an object
+        obj_match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', text)
+        if obj_match:
+            try:
+                cleaned = re.sub(r',\s*([}\]])', r'\1', obj_match.group(0))
+                return json.loads(cleaned)
+            except json.JSONDecodeError:
+                pass
+
+        # Try extracting just an array
+        arr_match = re.search(r'\[[^\[\]]*(?:\[[^\[\]]*\][^\[\]]*)*\]', text)
+        if arr_match:
+            try:
+                cleaned = re.sub(r',\s*([}\]])', r'\1', arr_match.group(0))
+                return json.loads(cleaned)
+            except json.JSONDecodeError:
+                pass
+
+        raise ValueError(f"Failed to parse AI response as JSON: {str(e)[:200]}")

@@ -12,6 +12,7 @@ class Bookmark(db.Model):
 
     __table_args__ = (
         db.UniqueConstraint('user_id', 'bookmark_type', 'item_id', name='uq_user_bookmark'),
+        db.Index('idx_user_bookmark_type', 'user_id', 'bookmark_type'),
     )
 
     def to_dict(self):

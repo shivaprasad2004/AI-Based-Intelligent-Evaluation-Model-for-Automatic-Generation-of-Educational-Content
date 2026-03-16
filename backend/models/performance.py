@@ -16,6 +16,7 @@ class PerformanceRecord(db.Model):
 
     __table_args__ = (
         db.UniqueConstraint('student_id', 'topic_id', name='unique_student_topic'),
+        db.Index('idx_student_topic', 'student_id', 'topic_id'),
     )
 
     def to_dict(self):

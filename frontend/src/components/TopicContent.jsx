@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { BookOpen, Lightbulb, Code, FileText, ChevronDown, ChevronUp, ExternalLink, Globe, Link2, Info } from 'lucide-react';
 import GlassCard from './ui/GlassCard';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function TopicContent({ content }) {
   const [expandedConcept, setExpandedConcept] = useState(null);
@@ -134,9 +137,14 @@ export default function TopicContent({ content }) {
                 <h4 className="font-medium text-gray-800 dark:text-white mb-2">{example.title}</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{example.description}</p>
                 {example.code && (
-                  <pre className="mt-3 bg-gray-900 text-green-400 p-3 rounded-lg text-sm overflow-x-auto">
-                    <code>{example.code}</code>
-                  </pre>
+                  <SyntaxHighlighter
+                    language="python"
+                    style={oneDark}
+                    className="mt-3 rounded-lg text-sm"
+                    customStyle={{ margin: 0, borderRadius: '0.5rem' }}
+                  >
+                    {example.code}
+                  </SyntaxHighlighter>
                 )}
               </div>
             ))}
@@ -210,8 +218,23 @@ export default function TopicContent({ content }) {
             <FileText className="w-5 h-5 text-orange-500 shrink-0 mt-1" />
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Study Guide</h3>
           </div>
-          <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line ml-8">
-            {content.study_material}
+          <div className="prose prose-sm dark:prose-invert max-w-none ml-8">
+            <ReactMarkdown
+              components={{
+                code({ inline, className, children, ...props }) {
+                  const match = /language-(\w+)/.exec(className || '');
+                  return !inline && match ? (
+                    <SyntaxHighlighter style={oneDark} language={match[1]} PreTag="div" customStyle={{ borderRadius: '0.5rem' }} {...props}>
+                      {String(children).replace(/\n$/, '')}
+                    </SyntaxHighlighter>
+                  ) : (
+                    <code className={`${className || ''} bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-sm`} {...props}>{children}</code>
+                  );
+                }
+              }}
+            >
+              {content.study_material}
+            </ReactMarkdown>
           </div>
         </GlassCard>
       )}

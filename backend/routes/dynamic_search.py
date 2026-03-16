@@ -5,7 +5,7 @@ from utils.db import db
 from services.ai_service import (
     get_ai_response, get_ai_content_response, parse_json_response,
     _generate_ai_topic_content, _generate_ai_questions, _evaluate_ai_answers,
-    _generate_real_topic_content
+    _generate_real_topic_content, _score_content_quality
 )
 from utils.prompts import (
     TOPIC_CONTENT_PROMPT, DYNAMIC_QUIZ_PROMPT, ANSWER_EVALUATION_PROMPT
@@ -20,6 +20,29 @@ from utils.auth_helpers import student_required
 import json
 
 dynamic_bp = Blueprint('dynamic', __name__)
+
+
+@dynamic_bp.route('/trending-topics', methods=['GET'])
+@jwt_required()
+def trending_topics():
+    """Return recently searched high-quality topics for suggestions."""
+    recent = TopicSearchCache.query.filter(
+        TopicSearchCache.quality_score >= 40
+    ).order_by(TopicSearchCache.created_at.desc()).limit(20).all()
+
+    topics = []
+    seen = set()
+    for t in recent:
+        name = t.topic_name
+        if name.lower() not in seen:
+            seen.add(name.lower())
+            topics.append({
+                'name': name,
+                'quality': t.quality_score,
+                'source_type': t.source_type
+            })
+
+    return jsonify({'topics': topics})
 
 
 @dynamic_bp.route('/search-topic', methods=['POST'])
@@ -45,17 +68,20 @@ def search_topic():
 
     # Generate content: AI-powered (Gemini/Claude/GPT) or fallback to raw web data
     has_ai = current_app.config.get('AI_PROVIDER', 'mock') != 'mock'
+    source_type = 'unknown'
 
     try:
         if has_ai:
             # AI-POWERED: Fetches real web data + uses AI to synthesize accurate content
             raw = _generate_ai_topic_content(topic)
             content = json.loads(raw) if isinstance(raw, str) else raw
+            source_type = 'ai'
         else:
             # FALLBACK: Raw web data extraction without AI
             prompt = TOPIC_CONTENT_PROMPT.format(topic=topic)
             raw = _generate_real_topic_content(prompt)
             content = json.loads(raw) if isinstance(raw, str) else raw
+            source_type = 'web_only'
 
         # Ensure all required fields exist
         content.setdefault('overview', '')
@@ -69,14 +95,15 @@ def search_topic():
         content.setdefault('infobox', {})
         content.setdefault('sources', [])
     except Exception as e:
-        print(f"Content generation error: {e}")
+        current_app.logger.error(f"Content generation error for '{topic}': {e}")
         # Last resort fallback
         try:
             prompt = TOPIC_CONTENT_PROMPT.format(topic=topic)
             raw = _generate_real_topic_content(prompt)
             content = json.loads(raw)
+            source_type = 'web_only'
         except Exception as e2:
-            print(f"Content generation fallback error: {e2}")
+            current_app.logger.error(f"Content generation fallback error for '{topic}': {e2}")
             content = {
                 'overview': f'{topic} is an important area of study. Please try again later.',
                 'key_concepts': [],
@@ -89,6 +116,10 @@ def search_topic():
                 'infobox': {},
                 'sources': []
             }
+            source_type = 'mock'
+
+    # Score content quality
+    quality_score = _score_content_quality(content)
 
     # Cache the result
     cache_entry = TopicSearchCache(
@@ -103,7 +134,9 @@ def search_topic():
         web_resources=json.dumps(content.get('web_resources', [])),
         related_topics=json.dumps(content.get('related_topics', [])),
         infobox=json.dumps(content.get('infobox', {})),
-        sources=json.dumps(content.get('sources', []))
+        sources=json.dumps(content.get('sources', [])),
+        quality_score=quality_score,
+        source_type=source_type
     )
     db.session.add(cache_entry)
     db.session.commit()
@@ -172,11 +205,14 @@ def generate_quiz():
             raw = get_ai_response(prompt)
             questions_data = parse_json_response(raw)
     except Exception as e:
-        print(f"Quiz generation error: {e}")
+        current_app.logger.error(f"Quiz generation error for '{topic_name}': {e}")
         questions_data = []
 
     if not questions_data:
-        return jsonify({'error': 'Failed to generate quiz questions. Try a different topic.'}), 500
+        return jsonify({
+            'error': 'Quiz generation temporarily unavailable.',
+            'suggestion': 'Try again in a moment or try a different topic.'
+        }), 503
 
     # Save questions
     saved_questions = []
@@ -267,7 +303,7 @@ def submit_quiz():
         for ev in evaluations:
             eval_results[ev['question_id']] = ev
     except Exception as e:
-        print(f"Evaluation error: {e}")
+        current_app.logger.error(f"AI evaluation error for topic '{topic_name}': {e}")
 
     # Process answers
     total_score = 0
@@ -333,27 +369,72 @@ def submit_quiz():
 
     db.session.commit()
 
-    # Adaptive recommendations
+    # Adaptive recommendations based on performance
     recommendations = []
     if percentage < 50:
         recommendations.append({
-            'type': 'easier_questions',
-            'message': f'Consider reviewing the basics of {topic_name}. Try a quiz at difficulty level {max(1, session.difficulty_level - 1)}.'
+            'type': 'review_basics',
+            'message': f'Consider reviewing the basics of {topic_name}. Try a quiz at difficulty level {max(1, session.difficulty_level - 1)}.',
+            'action': 'explore',
+            'topic': topic_name
         })
         recommendations.append({
             'type': 'study_material',
-            'message': f'We recommend studying the key concepts of {topic_name} before retaking the quiz.'
+            'message': f'Study the key concepts of {topic_name} before retaking the quiz.',
+            'action': 'study',
+            'topic': topic_name
         })
+        # Find weak concepts from wrong answers
+        wrong_topics = [r['question_text'][:60] for r in results if not r['is_correct']][:3]
+        if wrong_topics:
+            recommendations.append({
+                'type': 'focus_areas',
+                'message': f'Focus on these areas: {"; ".join(wrong_topics)}',
+                'action': 'review'
+            })
     elif percentage >= 80:
         recommendations.append({
             'type': 'advanced',
-            'message': f'Excellent work! Try a harder quiz at difficulty level {min(5, session.difficulty_level + 1)}.'
+            'message': f'Excellent work! Try a harder quiz at difficulty level {min(5, session.difficulty_level + 1)}.',
+            'action': 'quiz',
+            'topic': topic_name,
+            'difficulty': min(5, session.difficulty_level + 1)
+        })
+        # Suggest related topics
+        related = TopicSearchCache.query.filter(
+            TopicSearchCache.topic_key != topic_name.lower(),
+            TopicSearchCache.quality_score >= 50
+        ).order_by(TopicSearchCache.created_at.desc()).limit(3).all()
+        if related:
+            for r in related:
+                recommendations.append({
+                    'type': 'explore_related',
+                    'message': f'Explore related topic: {r.topic_name}',
+                    'action': 'explore',
+                    'topic': r.topic_name
+                })
+        recommendations.append({
+            'type': 'exam',
+            'message': f'Ready for a challenge? Try a written exam on {topic_name}.',
+            'action': 'exam',
+            'topic': topic_name
         })
     else:
         recommendations.append({
             'type': 'practice',
-            'message': f'Good effort! Keep practicing {topic_name} at this level to strengthen your understanding.'
+            'message': f'Good effort! Keep practicing {topic_name} at this level to strengthen your understanding.',
+            'action': 'quiz',
+            'topic': topic_name,
+            'difficulty': session.difficulty_level
         })
+        # Identify weak areas
+        weak_areas = [r for r in results if r['score'] < 0.5]
+        if weak_areas:
+            recommendations.append({
+                'type': 'review_mistakes',
+                'message': f'Review the {len(weak_areas)} question(s) you got wrong to improve.',
+                'action': 'review'
+            })
 
     return jsonify({
         'session_id': session.id,

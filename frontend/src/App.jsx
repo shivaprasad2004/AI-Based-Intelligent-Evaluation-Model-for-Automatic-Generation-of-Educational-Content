@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { QuizProvider } from './context/QuizContext';
 import { ThemeProvider } from './context/ThemeContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import LandingPage from './pages/LandingPage';
@@ -29,6 +30,8 @@ import DynamicResultsPage from './pages/DynamicResultsPage';
 import LearningDashboard from './pages/LearningDashboard';
 import ExamPage from './pages/ExamPage';
 import ExamResultsPage from './pages/ExamResultsPage';
+import NotesPage from './pages/NotesPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function AppRoutes() {
   const { user, loading } = useAuth();
@@ -49,6 +52,7 @@ function AppRoutes() {
     <>
       {user && <Navbar />}
       <div className={user ? "min-h-screen bg-gray-50 dark:bg-gray-900 mesh-gradient" : ""}>
+        <ErrorBoundary>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             {/* Public routes */}
@@ -78,9 +82,11 @@ function AppRoutes() {
             <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
             <Route path="/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/notes" element={<ProtectedRoute><NotesPage /></ProtectedRoute>} />
+            <Route path="*" element={user ? <NotFoundPage /> : <Navigate to="/" />} />
           </Routes>
         </AnimatePresence>
+        </ErrorBoundary>
       </div>
       {user && user.role === 'student' && <AIChatbot />}
     </>

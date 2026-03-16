@@ -4,15 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
-import { User, Mail, Shield, Calendar, Lock, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Shield, Calendar, Lock, Eye, EyeOff, Edit3, Check, X } from 'lucide-react';
 import PasswordStrengthMeter, { getPasswordStrength } from '../components/PasswordStrengthMeter';
 import PageTransition from '../components/ui/PageTransition';
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // Profile editing state
+  const [editing, setEditing] = useState(false);
+  const [editForm, setEditForm] = useState({ username: user?.username || '', email: user?.email || '' });
+  const [savingProfile, setSavingProfile] = useState(false);
 
   // Password change state
   const [showPasswordChange, setShowPasswordChange] = useState(false);
@@ -22,6 +27,34 @@ export default function ProfilePage() {
 
   const newPasswordStrength = getPasswordStrength(passwordForm.new);
   const isNewPasswordStrong = newPasswordStrength >= 3;
+
+  const handleProfileSave = async () => {
+    if (!editForm.username.trim() || !editForm.email.trim()) {
+      return toast.error('Username and email are required');
+    }
+    setSavingProfile(true);
+    try {
+      const res = await api.put('/auth/profile', {
+        username: editForm.username.trim(),
+        email: editForm.email.trim()
+      });
+      if (setUser && res.data.user) {
+        setUser(res.data.user);
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+      }
+      toast.success('Profile updated successfully!');
+      setEditing(false);
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Failed to update profile');
+    } finally {
+      setSavingProfile(false);
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditForm({ username: user?.username || '', email: user?.email || '' });
+    setEditing(false);
+  };
 
   useEffect(() => {
     if (user.role === 'student') {
@@ -86,24 +119,53 @@ export default function ProfilePage() {
         {/* Profile card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-8 border border-gray-100 dark:border-gray-700">
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Profile</h1>
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Profile</h1>
+            {!editing ? (
+              <button onClick={() => setEditing(true)}
+                className="flex items-center gap-2 text-sm text-indigo-600 dark:text-indigo-400 hover:underline font-medium">
+                <Edit3 className="w-4 h-4" /> Edit Profile
+              </button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <button onClick={handleProfileSave} disabled={savingProfile}
+                  className="flex items-center gap-1 px-3 py-1.5 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 disabled:opacity-50">
+                  <Check className="w-3.5 h-3.5" /> {savingProfile ? 'Saving...' : 'Save'}
+                </button>
+                <button onClick={cancelEdit}
+                  className="flex items-center gap-1 px-3 py-1.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm hover:bg-gray-300 dark:hover:bg-gray-600">
+                  <X className="w-3.5 h-3.5" /> Cancel
+                </button>
+              </div>
+            )}
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
                 <User className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               </div>
-              <div>
+              <div className="flex-1">
                 <p className="text-xs text-gray-500 dark:text-gray-400">Username</p>
-                <p className="text-lg font-medium text-gray-800 dark:text-white">{user.username || 'User'}</p>
+                {editing ? (
+                  <input type="text" value={editForm.username} onChange={e => setEditForm(f => ({ ...f, username: e.target.value }))}
+                    className="w-full text-lg font-medium bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-2 py-1 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                ) : (
+                  <p className="text-lg font-medium text-gray-800 dark:text-white">{user.username || 'User'}</p>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-3">
               <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
                 <Mail className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               </div>
-              <div>
+              <div className="flex-1">
                 <p className="text-xs text-gray-500 dark:text-gray-400">Email</p>
-                <p className="text-lg font-medium text-gray-800 dark:text-white">{user.email || 'N/A'}</p>
+                {editing ? (
+                  <input type="email" value={editForm.email} onChange={e => setEditForm(f => ({ ...f, email: e.target.value }))}
+                    className="w-full text-lg font-medium bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-2 py-1 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                ) : (
+                  <p className="text-lg font-medium text-gray-800 dark:text-white">{user.email || 'N/A'}</p>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-3">

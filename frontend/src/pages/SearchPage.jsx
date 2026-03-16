@@ -9,7 +9,7 @@ import TopicContent from '../components/TopicContent';
 import { SkeletonTopicContent } from '../components/ui/SkeletonLoader';
 import { useAuth } from '../context/AuthContext';
 
-const SUGGESTED_TOPICS = [
+const FALLBACK_TOPICS = [
   'Machine Learning', 'Quantum Physics', 'Data Structures', 'Organic Chemistry',
   'World War II', 'Artificial Intelligence', 'Calculus', 'Python Programming',
   'DNA Replication', 'Solar System', 'Blockchain', 'Operating Systems'
@@ -20,6 +20,7 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState(null);
   const [generatingQuiz, setGeneratingQuiz] = useState(false);
+  const [suggestedTopics, setSuggestedTopics] = useState(FALLBACK_TOPICS);
   const navigate = useNavigate();
   const locationState = useLocation();
   const { user } = useAuth();
@@ -31,6 +32,29 @@ export default function SearchPage() {
       return JSON.parse(localStorage.getItem('recentSearches') || '[]');
     } catch { return []; }
   });
+
+  // Fetch trending topics on mount
+  useEffect(() => {
+    const fetchTrending = async () => {
+      try {
+        const res = await api.get('/trending-topics');
+        if (res.data?.topics?.length > 0) {
+          const trendingNames = res.data.topics.map(t => t.name);
+          // Merge trending with fallback, deduplicate
+          const seen = new Set(trendingNames.map(n => n.toLowerCase()));
+          const merged = [...trendingNames];
+          for (const t of FALLBACK_TOPICS) {
+            if (!seen.has(t.toLowerCase())) {
+              merged.push(t);
+              seen.add(t.toLowerCase());
+            }
+          }
+          setSuggestedTopics(merged.slice(0, 16));
+        }
+      } catch { /* use fallback */ }
+    };
+    fetchTrending();
+  }, []);
 
   useEffect(() => {
     if (locationState.state?.retryTopic) {
@@ -286,9 +310,9 @@ export default function SearchPage() {
               </div>
             )}
 
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Popular topics:</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Trending & Popular topics:</p>
             <div className="flex flex-wrap justify-center gap-2 max-w-lg mx-auto">
-              {SUGGESTED_TOPICS.map(t => (
+              {suggestedTopics.map(t => (
                 <button
                   key={t}
                   onClick={() => handleChipClick(t)}

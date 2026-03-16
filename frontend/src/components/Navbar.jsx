@@ -5,7 +5,8 @@ import { useTheme } from '../context/ThemeContext';
 import SearchBar from './SearchBar';
 import StreakDisplay from './StreakDisplay';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, LogOut, Menu, X, LayoutDashboard, Compass, Trophy, Bookmark, BarChart3, User, BookOpen, Brain, ChevronDown, Shield, Settings } from 'lucide-react';
+import { Sun, Moon, LogOut, Menu, X, LayoutDashboard, Compass, Trophy, Bookmark, BarChart3, User, BookOpen, Brain, ChevronDown, Shield, Settings, FileText, Search } from 'lucide-react';
+import NotificationCenter from './NotificationCenter';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -50,6 +51,7 @@ export default function Navbar() {
     ...(user.role === 'student' ? [{ to: '/learning-dashboard', label: 'Progress', icon: BarChart3 }] : []),
     { to: '/leaderboard', label: 'Leaderboard', icon: Trophy },
     { to: '/bookmarks', label: 'Bookmarks', icon: Bookmark },
+    { to: '/notes', label: 'Notes', icon: FileText },
     { to: '/analytics', label: 'Analytics', icon: BarChart3 },
   ];
 
@@ -62,7 +64,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 glass shadow-lg shadow-indigo-500/5">
+    <nav className="sticky top-0 z-50 glass shadow-lg shadow-indigo-500/5" aria-label="Main navigation">
       <div className="bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -98,7 +100,8 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-4">
               <SearchBar />
               <StreakDisplay streak={user.current_streak} compact />
-              <button onClick={toggle} className="p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-colors">
+              <NotificationCenter />
+              <button onClick={toggle} aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'} className="p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-colors">
                 {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
 
@@ -106,6 +109,9 @@ export default function Navbar() {
               <div className="relative pl-3 border-l border-white/20" ref={avatarRef}>
                 <button
                   onClick={() => setAvatarOpen(!avatarOpen)}
+                  aria-label="User menu"
+                  aria-expanded={avatarOpen}
+                  aria-haspopup="true"
                   className="flex items-center gap-2 hover:bg-white/10 rounded-lg px-2 py-1.5 transition-colors"
                 >
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-400 flex items-center justify-center text-white font-bold text-sm shadow-inner">
@@ -161,7 +167,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile toggle */}
-            <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden p-2 text-white">
+            <button onClick={() => setMobileOpen(!mobileOpen)} aria-label={mobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileOpen} className="lg:hidden p-2 text-white">
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
@@ -207,7 +213,7 @@ export default function Navbar() {
                 </div>
 
                 <div className="pt-2 border-t border-white/10 flex items-center justify-between">
-                  <button onClick={toggle} className="p-2 text-white/70 hover:text-white rounded-lg hover:bg-white/10 transition-colors">
+                  <button onClick={toggle} aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'} className="p-2 text-white/70 hover:text-white rounded-lg hover:bg-white/10 transition-colors">
                     {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                   </button>
                   <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-red-300 hover:text-red-200 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors">

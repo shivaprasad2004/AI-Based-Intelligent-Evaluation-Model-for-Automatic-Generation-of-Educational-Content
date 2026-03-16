@@ -157,6 +157,43 @@ def me():
     return jsonify({'user': user.to_dict()})
 
 
+@auth_bp.route('/profile', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    """Update user profile (username and/or email)."""
+    user_id = int(get_jwt_identity())
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    data = request.get_json()
+    if not data:
+        return jsonify({'error': 'No data provided'}), 400
+
+    if 'username' in data:
+        username = data['username'].strip()
+        username_check = validate_username(username)
+        if not username_check['valid']:
+            return jsonify({'error': username_check['error']}), 400
+        existing = User.query.filter_by(username=username).first()
+        if existing and existing.id != user_id:
+            return jsonify({'error': 'Username already taken'}), 409
+        user.username = username
+
+    if 'email' in data:
+        email = data['email'].strip()
+        email_check = validate_email(email)
+        if not email_check['valid']:
+            return jsonify({'error': email_check['error']}), 400
+        existing = User.query.filter_by(email=email).first()
+        if existing and existing.id != user_id:
+            return jsonify({'error': 'Email already in use'}), 409
+        user.email = email
+
+    db.session.commit()
+    return jsonify({'user': user.to_dict()})
+
+
 @auth_bp.route('/validate-password', methods=['POST'])
 def check_password_strength():
     data = request.get_json()

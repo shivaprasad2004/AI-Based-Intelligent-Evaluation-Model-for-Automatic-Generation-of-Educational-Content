@@ -1,5 +1,8 @@
 import requests
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def get_topic_content(topic_name, topic_description=''):
@@ -15,27 +18,30 @@ def get_topic_content(topic_name, topic_description=''):
     # 1. Wikipedia
     try:
         import wikipedia
-        wiki_page = wikipedia.summary(topic_name, sentences=8)
+        wikipedia.set_lang("en")
+        wiki_page = wikipedia.summary(topic_name, sentences=8, auto_suggest=True)
         result['wikipedia_summary'] = wiki_page
         try:
             result['wikipedia_url'] = wikipedia.page(topic_name, auto_suggest=False).url
         except Exception:
             result['wikipedia_url'] = f'https://en.wikipedia.org/wiki/{topic_name.replace(" ", "_")}'
-    except Exception:
+    except Exception as e:
+        logger.warning(f"Wikipedia primary fetch failed for '{topic_name}': {e}")
         try:
             import wikipedia
             search_results = wikipedia.search(topic_name, results=3)
             if search_results:
-                wiki_page = wikipedia.summary(search_results[0], sentences=8)
+                wiki_page = wikipedia.summary(search_results[0], sentences=8, auto_suggest=False)
                 result['wikipedia_summary'] = wiki_page
                 result['wikipedia_url'] = f'https://en.wikipedia.org/wiki/{search_results[0].replace(" ", "_")}'
-        except Exception:
-            result['wikipedia_summary'] = f'{topic_name}: {topic_description}'
+        except Exception as e2:
+            logger.warning(f"Wikipedia fallback fetch also failed for '{topic_name}': {e2}")
+            result['wikipedia_summary'] = f'{topic_name}: {topic_description}' if topic_description else ''
 
     # 2. DuckDuckGo Instant Answer API (free, no key needed)
     try:
         ddg_url = f'https://api.duckduckgo.com/?q={requests.utils.quote(topic_name)}&format=json&no_html=1&skip_disambig=1'
-        resp = requests.get(ddg_url, timeout=5)
+        resp = requests.get(ddg_url, timeout=8)
         data = resp.json()
         if data.get('AbstractText'):
             result['web_results'].append({
@@ -49,8 +55,8 @@ def get_topic_content(topic_name, topic_description=''):
                     'text': rt['Text'],
                     'url': rt.get('FirstURL', '')
                 })
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"DuckDuckGo fetch failed for '{topic_name}': {e}")
 
     # 3. Extract key concepts from content
     content = result['wikipedia_summary']

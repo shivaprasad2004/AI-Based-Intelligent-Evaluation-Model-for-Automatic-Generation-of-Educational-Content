@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const api = axios.create({
   baseURL: '/api',
@@ -80,6 +81,25 @@ api.interceptors.response.use(
       } finally {
         isRefreshing = false;
       }
+    }
+
+    // Handle rate limiting (429)
+    if (error.response?.status === 429) {
+      toast.error('Too many requests. Please wait a moment and try again.');
+      return Promise.reject(error);
+    }
+
+    // Handle server errors (500+)
+    if (error.response?.status >= 500) {
+      console.error('Server error:', error.response?.status, error.response?.data);
+      toast.error(error.response?.data?.error || 'Server error. Please try again.');
+      return Promise.reject(error);
+    }
+
+    // Handle network errors (no response at all)
+    if (!error.response && error.message) {
+      toast.error('Network error. Please check your connection.');
+      return Promise.reject(error);
     }
 
     return Promise.reject(error);

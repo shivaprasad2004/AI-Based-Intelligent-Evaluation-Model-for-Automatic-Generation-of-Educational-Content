@@ -1,7 +1,10 @@
 import re
 import math
+import logging
 from collections import Counter
 from services.ai_service import _fetch_wikipedia, _fetch_duckduckgo
+
+logger = logging.getLogger(__name__)
 
 
 STOP_WORDS = {
@@ -30,8 +33,17 @@ def _simple_stem(word):
 
 def extract_key_concepts(topic_name):
     """Extract key concepts from internet sources for a topic."""
-    wiki = _fetch_wikipedia(topic_name)
-    ddg = _fetch_duckduckgo(topic_name)
+    try:
+        wiki = _fetch_wikipedia(topic_name)
+    except Exception as e:
+        logger.error(f"Wikipedia fetch failed in essay evaluator for '{topic_name}': {e}")
+        wiki = None
+
+    try:
+        ddg = _fetch_duckduckgo(topic_name)
+    except Exception as e:
+        logger.error(f"DuckDuckGo fetch failed in essay evaluator for '{topic_name}': {e}")
+        ddg = None
 
     concepts = set()
     concept_details = {}

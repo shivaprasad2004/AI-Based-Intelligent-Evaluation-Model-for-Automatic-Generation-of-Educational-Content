@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.topic import Topic
 from models.question import Question
@@ -52,7 +52,8 @@ def generate():
         }), 201
     except Exception as e:
         db.session.rollback()
-        return jsonify({'error': f'Generation failed: {str(e)}'}), 500
+        current_app.logger.error(f"Question generation failed for topic '{topic.name}': {e}")
+        return jsonify({'error': 'Question generation failed. Please try again.'}), 500
 
 @questions_bp.route('/<int:question_id>', methods=['DELETE'])
 @jwt_required()
