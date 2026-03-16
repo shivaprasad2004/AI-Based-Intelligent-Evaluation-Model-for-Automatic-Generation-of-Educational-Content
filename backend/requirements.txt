@@ -10,3 +10,4 @@ Werkzeug==3.0.1
 wikipedia==1.4.0
 requests==2.31.0
 Flask-Limiter==3.5.1
+gunicorn==21.2.0

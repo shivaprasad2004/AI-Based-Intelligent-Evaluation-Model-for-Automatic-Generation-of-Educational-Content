@@ -102,6 +102,25 @@ An advanced AI-driven adaptive learning platform that generates educational cont
    npm run dev
    ```
 
+## 🚀 Deployment
+
+### Backend Deployment (Render, Railway, or Docker)
+The backend is ready to be deployed as a Docker container or directly using Gunicorn.
+
+1.  **Environment Variables**: Set all keys from your `.env` in your deployment platform's settings.
+2.  **Database**: For production, it's recommended to use a managed PostgreSQL database. Set `DATABASE_URL` to your PostgreSQL connection string.
+3.  **Command**: If not using Docker, use the following command:
+    ```bash
+    gunicorn --bind 0.0.0.0:5000 "app:create_app()"
+    ```
+
+### Frontend Deployment (Vercel or Netlify)
+The frontend can be deployed as a static site.
+
+1.  **Build Command**: `npm run build`
+2.  **Output Directory**: `dist`
+3.  **Environment Variables**: Set `VITE_API_URL` to your deployed backend API URL (e.g., `https://your-backend.onrender.com`).
+
 ## 🤝 Contributing
 
 1. Fork the repository.
