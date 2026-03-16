@@ -55,12 +55,19 @@ An advanced AI-driven adaptive learning platform that generates educational cont
 
 ## ⚙️ Installation & Setup
 
-### Prerequisites
+### 1. Clone the Repository
+Clone the project to your local machine using the following command:
+```bash
+git clone https://github.com/shivaprasad2004/AI-Based-Intelligent-Evaluation-Model-for-Automatic-Generation-of-Educational-Content.git
+cd AI-Based-Intelligent-Evaluation-Model-for-Automatic-Generation-of-Educational-Content
+```
+
+### 2. Prerequisites
 - Python 3.8+
 - Node.js 18+
 - npm or yarn
 
-### Backend Setup
+### 3. Backend Setup
 1. Navigate to the `backend` directory:
    ```bash
    cd backend
@@ -88,7 +95,7 @@ An advanced AI-driven adaptive learning platform that generates educational cont
    flask run
    ```
 
-### Frontend Setup
+### 4. Frontend Setup
 1. Navigate to the `frontend` directory:
    ```bash
    cd frontend
