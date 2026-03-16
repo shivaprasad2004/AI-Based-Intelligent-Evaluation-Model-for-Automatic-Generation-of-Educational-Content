@@ -7,3 +7,7 @@ __pycache__/
 instance/
 .venv/
 venv/
+*.log
+backend/logs/
+frontend/dist/
+.DS_Store
