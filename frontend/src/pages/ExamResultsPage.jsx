@@ -117,10 +117,14 @@ export default function ExamResultsPage() {
     { subject: 'Depth', value: scoreBreakdown.Depth ?? scoreBreakdown.depth ?? 0, fullMark: 100 },
     { subject: 'Quality', value: scoreBreakdown.Quality ?? scoreBreakdown.quality ?? 0, fullMark: 100 },
     { subject: 'Vocabulary', value: scoreBreakdown.Vocabulary ?? scoreBreakdown.vocabulary ?? 0, fullMark: 100 },
+    ...(scoreBreakdown.accuracy != null
+      ? [{ subject: 'Accuracy', value: scoreBreakdown.accuracy, fullMark: 100 }]
+      : []),
   ];
 
-  const coveredConcepts = feedback.covered_concepts || [];
-  const missedConcepts = feedback.missed_concepts || [];
+  const conceptDetails = feedback.concept_details || [];
+  const coveredConcepts = conceptDetails.filter((c) => c.found);
+  const missedConcepts = conceptDetails.filter((c) => !c.found);
   const strengths = feedback.strengths || [];
   const weaknesses = feedback.weaknesses || [];
   const writingFeedback = feedback.writing_feedback || '';
@@ -298,9 +302,21 @@ export default function ExamResultsPage() {
                       className="flex items-start gap-2.5"
                     >
                       <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">
-                        {typeof concept === 'string' ? concept : concept.name || concept.concept}
-                      </span>
+                      <div>
+                        <span className="text-sm text-gray-700 dark:text-gray-300 block">
+                          {typeof concept === 'string' ? concept : concept.concept || concept.name}
+                        </span>
+                        {concept.context && (
+                          <span className="text-xs text-gray-400 dark:text-gray-500 italic block mt-0.5">
+                            {concept.context}
+                          </span>
+                        )}
+                        {concept.match_type === 'ai_semantic' && (
+                          <span className="text-xs text-indigo-400 dark:text-indigo-500 italic block mt-0.5">
+                            Detected via semantic analysis
+                          </span>
+                        )}
+                      </div>
                     </motion.li>
                   ))}
                 </ul>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Search, Sparkles, BookOpen, Loader2, Brain, RefreshCw, FileText, ArrowRight, Clock } from 'lucide-react';
+import { Search, Sparkles, BookOpen, Loader2, Brain, RefreshCw, FileText, ArrowRight, Clock, MessageSquare } from 'lucide-react';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 import PageTransition from '../components/ui/PageTransition';
@@ -204,8 +204,13 @@ export default function SearchPage() {
                     Take Quiz
                   </div>
                   <ArrowRight className="w-4 h-4 text-gray-300 hidden sm:block" />
+                  <div className="flex items-center gap-2 px-4 py-2 bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-full text-sm font-medium">
+                    <span className="w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                    Short Answer
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-gray-300 hidden sm:block" />
                   <div className="flex items-center gap-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 rounded-full text-sm font-medium">
-                    <span className="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                    <span className="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs font-bold">4</span>
                     Write Essay
                   </div>
                 </div>
@@ -250,6 +255,34 @@ export default function SearchPage() {
                 >
                   {generatingQuiz ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                   Adaptive Quiz (Auto Difficulty)
+                </button>
+              </GlassCard>
+            )}
+
+            {/* Short Answer Exam Section */}
+            {user?.role === 'student' && (
+              <GlassCard className="mt-6 text-center" hover={false}>
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <MessageSquare className="w-6 h-6 text-amber-500" />
+                  <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+                    Short Answer Exam
+                  </h2>
+                </div>
+                <p className="text-gray-500 dark:text-gray-400 mb-4">
+                  Test your knowledge with concise answers (10-15 words each) on <strong>"{content.topic}"</strong>.
+                  Scored by keyword matching for accuracy.
+                </p>
+                <div className="flex items-center justify-center gap-3 text-sm text-gray-400 mb-6">
+                  <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> 2 min/question</span>
+                  <span>|</span>
+                  <span className="flex items-center gap-1"><MessageSquare className="w-3.5 h-3.5" /> 10-15 words per answer</span>
+                </div>
+                <button
+                  onClick={() => navigate('/short-answer-exam', { state: { topic: content.topic } })}
+                  className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-8 py-3 rounded-xl hover:from-amber-600 hover:to-orange-600 font-medium transition-all flex items-center gap-2 mx-auto shadow-lg shadow-amber-500/25"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  Take Short Answer Exam
                 </button>
               </GlassCard>
             )}

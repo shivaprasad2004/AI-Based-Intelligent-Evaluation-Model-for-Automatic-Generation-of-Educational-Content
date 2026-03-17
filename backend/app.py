@@ -50,6 +50,7 @@ def create_app():
     from routes.chatbot import chatbot_bp
     from routes.dynamic_search import dynamic_bp
     from routes.exam import exam_bp
+    from routes.short_answer_exam import short_answer_exam_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(topics_bp, url_prefix='/api/topics')
@@ -65,6 +66,7 @@ def create_app():
     app.register_blueprint(chatbot_bp, url_prefix='/api/chatbot')
     app.register_blueprint(dynamic_bp, url_prefix='/api')
     app.register_blueprint(exam_bp, url_prefix='/api/exam')
+    app.register_blueprint(short_answer_exam_bp, url_prefix='/api/short-answer-exam')
 
     # Global error handlers
     @app.errorhandler(500)

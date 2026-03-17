@@ -77,3 +77,1503 @@
 [2026-03-16 18:15:35,615] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
 [2026-03-16 18:19:44,252] WARNING in ai_service: JSON parse error: Expecting value: line 1 column 1 (char 0). Attempting partial extraction...
 [2026-03-16 18:19:44,255] ERROR in dynamic_search: Content generation error for 'Explain me about indian economy': Failed to parse AI response as JSON: Expecting value: line 1 column 1 (char 0)
+[2026-03-16 18:42:27,999] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
+[2026-03-16 20:02:02,842] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
+[2026-03-16 20:08:03,458] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    record.total_quizzes += 1
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-16 20:08:03,784] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-16 20:08:07,726] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    record.total_quizzes += 1
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-16 20:08:07,733] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-16 20:08:15,366] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    record.total_quizzes += 1
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-16 20:08:15,374] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-16 20:08:26,849] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    record.total_quizzes += 1
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-16 20:08:26,854] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:06:08,817] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
+[2026-03-17 11:07:06,417] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    record.total_quizzes += 1
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:07:06,604] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:16,348] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:16,385] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:17,872] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:17,877] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:19,475] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:19,482] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:21,004] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:21,008] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:22,729] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:22,731] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:24,085] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:24,088] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:25,659] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:25,663] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:27,068] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:27,074] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:28,634] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:28,640] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:30,203] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:30,208] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:31,787] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:31,790] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:33,370] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:33,374] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:35,325] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:35,331] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:36,914] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:36,917] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:38,533] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:38,538] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:39,974] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:39,977] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:41,298] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:41,300] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:41,467] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:26:42,603] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:26:46,002] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:46,010] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:46,281] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:26:47,363] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:26:50,780] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:50,783] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:50,991] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:26:52,094] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:26:55,549] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:26:55,551] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:26:55,762] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:26:56,852] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:00,306] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:00,309] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:00,513] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:01,614] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:05,042] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:05,046] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:05,238] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:06,341] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:09,721] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:09,727] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:09,962] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:11,062] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:14,470] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:14,475] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:14,685] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:15,802] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:19,088] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:19,092] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:19,282] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:20,386] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:23,825] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:23,828] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:24,033] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:25,114] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:28,631] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:28,636] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:28,860] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:29,965] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:33,441] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:33,446] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:33,644] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:34,768] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:38,089] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:38,093] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:38,332] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:39,466] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:42,802] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:42,808] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:42,994] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:44,077] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:47,475] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:47,479] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:47,684] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:48,772] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:52,166] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:52,169] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:52,409] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:53,501] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:27:56,893] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:27:56,896] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:27:57,107] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:27:58,212] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:28:01,741] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:28:01,745] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:28:01,951] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:28:03,037] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:28:06,363] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:28:06,365] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:28:06,533] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:28:07,651] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:28:11,026] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:28:11,031] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:28:11,261] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:28:12,395] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:28:15,600] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:28:15,605] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:28:15,811] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:28:16,901] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:28:20,379] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:28:20,383] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:28:20,606] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:28:21,705] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:28:25,117] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:28:25,120] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:28:25,337] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:28:26,417] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:28:29,819] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:28:29,825] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:28:30,005] WARNING in ai_service: AI provider 'groq' attempt 1 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 1.0s...
+[2026-03-17 11:28:31,110] WARNING in ai_service: AI provider 'groq' attempt 2 failed (transient): 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions. Retrying in 2.0s...
+[2026-03-17 11:28:34,604] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:28:34,608] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:28:47,586] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:28:47,591] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:28:54,499] ERROR in app: Exception on /api/submit-quiz [POST]
+Traceback (most recent call last):
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shiva\AppData\Roaming\Python\Python311\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\utils\auth_helpers.py", line 23, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\routes\dynamic_search.py", line 360, in submit_quiz
+    perf_record = update_performance(student_id, session.topic_id, percentage)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PhaniandraMajorProject\backend\services\adaptive.py", line 39, in update_performance
+    total_quizzes=0,
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+[2026-03-17 11:28:54,502] ERROR in app: Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+[2026-03-17 11:30:45,377] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
+[2026-03-17 11:30:46,239] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
+[2026-03-17 11:31:24,927] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
+[2026-03-17 11:31:25,747] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
+[2026-03-17 11:36:07,820] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
+[2026-03-17 18:08:08,215] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
+[2026-03-17 18:08:08,216] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
+[2026-03-17 19:06:40,723] INFO in app: AI provider 'groq' configured with GROQ_API_KEY
+[2026-03-17 19:14:26,777] INFO in app: AI provider 'groq' configured with GROQ_API_KEY

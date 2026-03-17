@@ -2,7 +2,7 @@ import re
 import math
 import logging
 from collections import Counter
-from services.ai_service import _fetch_wikipedia, _fetch_duckduckgo
+from services.ai_service import _fetch_wikipedia, _fetch_duckduckgo, get_ai_response, parse_json_response
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +29,33 @@ def _simple_stem(word):
         if word.endswith(suffix) and len(word) - len(suffix) >= 3:
             return word[:-len(suffix)]
     return word
+
+
+def _build_synonym_map(concept):
+    """Build simple synonyms/variations for a concept."""
+    variations = {concept.lower()}
+    lower = concept.lower()
+
+    # Add plural/singular variations
+    if lower.endswith('s') and len(lower) > 3:
+        variations.add(lower[:-1])
+    elif lower.endswith('es') and len(lower) > 4:
+        variations.add(lower[:-2])
+    else:
+        variations.add(lower + 's')
+
+    # Add hyphenated/spaced variations
+    if '-' in lower:
+        variations.add(lower.replace('-', ' '))
+        variations.add(lower.replace('-', ''))
+    if ' ' in lower:
+        variations.add(lower.replace(' ', '-'))
+        variations.add(lower.replace(' ', ''))
+
+    # Add stem
+    variations.add(_simple_stem(lower))
+
+    return variations
 
 
 def extract_key_concepts(topic_name):
@@ -128,59 +155,149 @@ def extract_key_concepts(topic_name):
     return concept_list, concept_details, wiki, ddg
 
 
+def _match_concept_in_essay(concept, essay_lower, essay_words, essay_normalized):
+    """Enhanced concept matching with multiple strategies. Returns (found, match_type, count)."""
+    concept_lower = concept.lower()
+    found = False
+    match_type = None
+    mention_count = 0
+
+    # Strategy 1: Exact substring match
+    if concept_lower in essay_lower:
+        found = True
+        match_type = 'exact'
+        mention_count = essay_lower.count(concept_lower)
+    else:
+        # Strategy 2: Synonym/variation match
+        variations = _build_synonym_map(concept)
+        for variant in variations:
+            if variant in essay_lower and len(variant) > 3:
+                found = True
+                match_type = 'variation'
+                mention_count = essay_lower.count(variant)
+                break
+
+    if not found:
+        # Strategy 3: Stemmed match
+        concept_stem = _simple_stem(concept_lower)
+        for word in essay_words:
+            if _simple_stem(word) == concept_stem and len(concept_stem) > 3:
+                found = True
+                match_type = 'stemmed'
+                mention_count = sum(1 for w in essay_words if _simple_stem(w) == concept_stem)
+                break
+
+    if not found and ' ' in concept_lower:
+        # Strategy 4: Multi-word window match for multi-word concepts
+        concept_parts = concept_lower.split()
+        if len(concept_parts) <= 3:
+            for i in range(max(0, len(essay_words) - 50)):
+                window = essay_words[i:i + 50]
+                if all(any(_simple_stem(p) == _simple_stem(w) for w in window) for p in concept_parts):
+                    found = True
+                    match_type = 'window'
+                    mention_count = 1
+                    break
+
+    return found, match_type, min(mention_count, 5)
+
+
+def _get_ai_essay_analysis(essay_text, topic_name, key_concepts):
+    """Use AI for semantic essay analysis to supplement keyword matching."""
+    concepts_str = ', '.join(key_concepts[:25])
+    prompt = f"""You are an expert academic evaluator. Analyze this student's essay about "{topic_name}".
+
+ESSAY:
+{essay_text[:3000]}
+
+EXPECTED KEY CONCEPTS: {concepts_str}
+
+Evaluate the essay and return ONLY a valid JSON object with:
+- "concept_scores": an object where each key is a concept from the expected list, and value is 0 (not covered), 0.5 (partially covered/implied), or 1.0 (well covered)
+- "accuracy_score": float 0-100 (how factually accurate is the content)
+- "relevance_score": float 0-100 (how relevant is the essay to the topic)
+- "coherence_score": float 0-100 (how well-organized and logical is the writing)
+- "depth_score": float 0-100 (how deep is the analysis)
+- "overall_feedback": a 2-3 sentence assessment of the essay
+
+Return ONLY the JSON object, no markdown or extra text."""
+
+    try:
+        raw = get_ai_response(prompt)
+        result = parse_json_response(raw)
+        if isinstance(result, dict) and 'accuracy_score' in result:
+            return result
+    except Exception as e:
+        logger.warning(f"AI essay analysis failed for '{topic_name}': {e}")
+
+    return None
+
+
 def evaluate_essay(essay_text, topic_name, key_concepts, wiki_data=None):
-    """Evaluate an essay against key concepts extracted from internet sources."""
+    """Evaluate an essay against key concepts with enhanced matching and AI analysis."""
     essay_lower = essay_text.lower()
     essay_normalized = re.sub(r'[^\w\s]', '', essay_lower)
     essay_words = essay_normalized.split()
     word_count = len(essay_words)
 
-    # Match concepts
+    # Match concepts using enhanced matching
     matched = []
     missed = []
+    concept_match_details = {}
 
     for concept in key_concepts:
-        concept_lower = concept.lower()
-        found = False
-
-        # 1. Exact substring match
-        if concept_lower in essay_lower:
-            found = True
-        else:
-            # 2. Stemmed match
-            concept_stem = _simple_stem(concept_lower)
-            for word in essay_words:
-                if _simple_stem(word) == concept_stem:
-                    found = True
-                    break
-
-            # 3. Multi-word window match for multi-word concepts
-            if not found and ' ' in concept_lower:
-                concept_parts = concept_lower.split()
-                if len(concept_parts) <= 3:
-                    for i in range(len(essay_words) - 50):
-                        window = essay_words[i:i+50]
-                        if all(any(_simple_stem(p) == _simple_stem(w) for w in window) for p in concept_parts):
-                            found = True
-                            break
-
+        found, match_type, mention_count = _match_concept_in_essay(
+            concept, essay_lower, essay_words, essay_normalized
+        )
         if found:
             matched.append(concept)
+            concept_match_details[concept] = {
+                'match_type': match_type,
+                'mentions': mention_count
+            }
         else:
             missed.append(concept)
+
+    # Try AI analysis for supplementary scoring
+    ai_analysis = _get_ai_essay_analysis(essay_text, topic_name, key_concepts)
+
+    # If AI found concepts that keyword matching missed, add them as partial matches
+    if ai_analysis and 'concept_scores' in ai_analysis:
+        ai_concepts = ai_analysis.get('concept_scores', {})
+        newly_matched = []
+        for concept in missed[:]:
+            ai_score = ai_concepts.get(concept, ai_concepts.get(concept.lower(), 0))
+            if isinstance(ai_score, (int, float)) and ai_score >= 0.5:
+                newly_matched.append(concept)
+                concept_match_details[concept] = {
+                    'match_type': 'ai_semantic',
+                    'mentions': 1,
+                    'ai_score': ai_score
+                }
+        for c in newly_matched:
+            missed.remove(c)
+            matched.append(c)
 
     # Calculate scores
     total_concepts = len(key_concepts)
     matched_count = len(matched)
     coverage_score = (matched_count / total_concepts * 100) if total_concepts > 0 else 0
 
-    # Depth score: how many times matched concepts appear
+    # Depth score: how many times matched concepts appear (with match type weighting)
     depth_counts = []
     for concept in matched:
-        count = essay_lower.count(concept.lower())
-        depth_counts.append(min(count, 3))  # Cap at 3 mentions
+        details = concept_match_details.get(concept, {})
+        count = details.get('mentions', 1)
+        # Weight by match type quality
+        if details.get('match_type') == 'exact':
+            count = min(count, 3)
+        elif details.get('match_type') == 'ai_semantic':
+            count = details.get('ai_score', 0.5) * 2
+        else:
+            count = min(count, 2)
+        depth_counts.append(count)
     avg_depth = sum(depth_counts) / len(depth_counts) if depth_counts else 0
-    depth_score = min(avg_depth / 2.0 * 100, 100)  # 2+ mentions = full depth score
+    depth_score = min(avg_depth / 2.0 * 100, 100)
 
     # Essay quality score
     sentences = re.split(r'[.!?]+', essay_text)
@@ -222,13 +339,38 @@ def evaluate_essay(essay_text, topic_name, key_concepts, wiki_data=None):
     total_significant = len([w for w in essay_words if len(w) > 3 and w not in STOP_WORDS])
     vocab_richness = (len(unique_words) / max(total_significant, 1)) * 100 if total_significant > 0 else 0
 
+    # AI-enhanced scoring components
+    ai_accuracy = 0
+    ai_relevance = 0
+    if ai_analysis:
+        ai_accuracy = float(ai_analysis.get('accuracy_score', 0))
+        ai_relevance = float(ai_analysis.get('relevance_score', 0))
+        ai_coherence = float(ai_analysis.get('coherence_score', 0))
+        ai_depth = float(ai_analysis.get('depth_score', 0))
+
+        # Blend AI scores with algorithmic scores for more accurate results
+        # AI gets 40% weight, algorithmic gets 60%
+        coverage_score = coverage_score * 0.6 + ai_relevance * 0.4
+        depth_score = depth_score * 0.6 + ai_depth * 0.4
+        quality_score = quality_score * 0.6 + ai_coherence * 0.4
+
     # Final weighted score
     final_score = (
-        coverage_score * 0.40 +
+        coverage_score * 0.35 +
         depth_score * 0.25 +
-        quality_score * 0.20 +
-        vocab_richness * 0.15
+        quality_score * 0.15 +
+        vocab_richness * 0.10 +
+        ai_accuracy * 0.15  # Direct accuracy component from AI
     )
+    # If no AI available, redistribute weights
+    if not ai_analysis:
+        final_score = (
+            coverage_score * 0.40 +
+            depth_score * 0.25 +
+            quality_score * 0.20 +
+            vocab_richness * 0.15
+        )
+
     final_score = min(round(final_score, 1), 100)
 
     # Grade assignment
@@ -265,6 +407,12 @@ def evaluate_essay(essay_text, topic_name, key_concepts, wiki_data=None):
     elif vocab_richness < 30:
         weaknesses.append('Try to use more diverse vocabulary')
 
+    if ai_analysis:
+        if ai_accuracy >= 80:
+            strengths.append('Content is factually accurate')
+        elif ai_accuracy < 50:
+            weaknesses.append('Some factual inaccuracies detected - review the source material')
+
     # Concept details for frontend
     concept_details = []
     for c in matched:
@@ -275,10 +423,14 @@ def evaluate_essay(essay_text, topic_name, key_concepts, wiki_data=None):
             start = max(0, idx - 40)
             end = min(len(essay_text), idx + len(c) + 40)
             context = '...' + essay_text[start:end] + '...'
+
+        details = concept_match_details.get(c, {})
         concept_details.append({
             'concept': c.title(),
             'found': True,
-            'context': context
+            'context': context,
+            'match_type': details.get('match_type', 'exact'),
+            'mentions': details.get('mentions', 1)
         })
 
     for c in missed[:15]:  # Limit missed to 15
@@ -290,6 +442,10 @@ def evaluate_essay(essay_text, topic_name, key_concepts, wiki_data=None):
         })
 
     # Overall feedback
+    ai_overall = ''
+    if ai_analysis:
+        ai_overall = ai_analysis.get('overall_feedback', '')
+
     if final_score >= 80:
         overall = f'Excellent essay! You demonstrated strong understanding of {topic_name} by covering {matched_count} out of {total_concepts} key concepts.'
     elif final_score >= 60:
@@ -298,6 +454,9 @@ def evaluate_essay(essay_text, topic_name, key_concepts, wiki_data=None):
         overall = f'Fair attempt at writing about {topic_name}. You covered {matched_count} out of {total_concepts} concepts. Review the topic material and try to include more key ideas.'
     else:
         overall = f'Your essay on {topic_name} needs improvement. Only {matched_count} out of {total_concepts} key concepts were found. Study the material thoroughly before retrying.'
+
+    if ai_overall:
+        overall += f' AI Analysis: {ai_overall}'
 
     writing_feedback = _generate_writing_feedback(word_count, sentence_count, avg_sent_len, variety_score)
 
@@ -311,7 +470,8 @@ def evaluate_essay(essay_text, topic_name, key_concepts, wiki_data=None):
             'coverage': round(coverage_score, 1),
             'depth': round(depth_score, 1),
             'quality': round(quality_score, 1),
-            'vocabulary': round(vocab_richness, 1)
+            'vocabulary': round(vocab_richness, 1),
+            'accuracy': round(ai_accuracy, 1) if ai_analysis else None
         }
     }
 

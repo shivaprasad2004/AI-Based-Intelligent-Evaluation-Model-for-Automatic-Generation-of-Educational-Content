@@ -30,6 +30,8 @@ import DynamicResultsPage from './pages/DynamicResultsPage';
 import LearningDashboard from './pages/LearningDashboard';
 import ExamPage from './pages/ExamPage';
 import ExamResultsPage from './pages/ExamResultsPage';
+import ShortAnswerExamPage from './pages/ShortAnswerExamPage';
+import ShortAnswerResultsPage from './pages/ShortAnswerResultsPage';
 import NotesPage from './pages/NotesPage';
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -74,6 +76,8 @@ function AppRoutes() {
             <Route path="/learning-dashboard" element={<ProtectedRoute role="student"><LearningDashboard /></ProtectedRoute>} />
             <Route path="/exam" element={<ProtectedRoute role="student"><ExamPage /></ProtectedRoute>} />
             <Route path="/exam-results" element={<ProtectedRoute><ExamResultsPage /></ProtectedRoute>} />
+            <Route path="/short-answer-exam" element={<ProtectedRoute role="student"><ShortAnswerExamPage /></ProtectedRoute>} />
+            <Route path="/short-answer-results" element={<ProtectedRoute><ShortAnswerResultsPage /></ProtectedRoute>} />
             <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
             <Route path="/bookmarks" element={<ProtectedRoute><BookmarksPage /></ProtectedRoute>} />
             <Route path="/topics" element={<ProtectedRoute role="educator"><TopicManagePage /></ProtectedRoute>} />

@@ -33,13 +33,20 @@ def update_performance(student_id, topic_id, score_percentage):
     ).first()
 
     if not record:
-        record = PerformanceRecord(student_id=student_id, topic_id=topic_id)
+        record = PerformanceRecord(
+            student_id=student_id,
+            topic_id=topic_id,
+            total_quizzes=0,
+            average_score=0.0,
+            current_level=1
+        )
         db.session.add(record)
 
-    record.total_quizzes += 1
+    record.total_quizzes = (record.total_quizzes or 0) + 1
     # Running average
+    prev_avg = record.average_score or 0.0
     record.average_score = (
-        (record.average_score * (record.total_quizzes - 1) + score_percentage)
+        (prev_avg * (record.total_quizzes - 1) + score_percentage)
         / record.total_quizzes
     )
 
