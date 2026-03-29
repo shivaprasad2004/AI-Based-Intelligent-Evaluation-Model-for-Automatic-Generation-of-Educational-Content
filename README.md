@@ -121,12 +121,20 @@ The backend is ready to be deployed as a Docker container or directly using Guni
     gunicorn --bind 0.0.0.0:5000 "app:create_app()"
     ```
 
-### Frontend Deployment (Vercel or Netlify)
+### Frontend Deployment (Vercel, Netlify, or Firebase)
 The frontend can be deployed as a static site.
 
+#### Vercel/Netlify
 1.  **Build Command**: `npm run build`
 2.  **Output Directory**: `dist`
-3.  **Environment Variables**: Set `VITE_API_URL` to your deployed backend API URL (e.g., `https://your-backend.onrender.com`).
+3.  **Environment Variables**: Set `VITE_API_URL` to your deployed backend API URL.
+
+#### Firebase Hosting
+1.  Install Firebase CLI: `npm install -g firebase-tools`
+2.  Login: `firebase login`
+3.  Initialize (if not already): `firebase init hosting` (Select `dist` as public directory, configure as SPA).
+4.  Build the project: `npm run build`
+5.  Deploy: `firebase deploy`
 
 ## 🤝 Contributing
 
